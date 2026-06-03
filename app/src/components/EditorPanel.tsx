@@ -80,7 +80,8 @@ function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
 }
 
 export function EditorPanel() {
-  const { rawText, setRawText, setBlocks, author, setAuthor, showAuthor, setShowAuthor, coverEnabled, setCoverEnabled } = useStore()  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { rawText, setRawText, setBlocks, author, setAuthor, showAuthor, setShowAuthor, coverEnabled, setCoverEnabled } = useStore()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const avatarInputRef = useRef<HTMLInputElement>(null)
 
   const handleFile = useCallback(async (file: File) => {
