@@ -9,19 +9,21 @@ import './index.css'
 
 export default function App() {
   const [pages, setPages] = useState<Page[]>([])
-  const { rawText, getTheme, setBlocks } = useStore()
+  const { rawText, getTheme, setBlocks, coverEnabled, coverImage } = useStore()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => {
       if (!rawText.trim()) { setPages([]); return }
+      const theme = getTheme()
       const blocks = parseMarkdown(rawText)
       setBlocks(blocks)
-      setPages(paginate(blocks, getTheme()))
+      const coverH = coverEnabled && coverImage ? theme.cover.imageHeight : 0
+      setPages(paginate(blocks, theme, coverH))
     }, 500)
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
-  }, [rawText, getTheme, setBlocks])
+  }, [rawText, getTheme, setBlocks, coverEnabled, coverImage])
 
   return (
     <div className="flex flex-col h-screen bg-[#f0efe9]">

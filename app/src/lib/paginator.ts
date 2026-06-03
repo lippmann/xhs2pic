@@ -57,10 +57,14 @@ function estimateHeight(block: Block, theme: TemplateTheme): number {
   }
 }
 
-export function paginate(blocks: Block[], theme: TemplateTheme): Page[] {
+export function paginate(blocks: Block[], theme: TemplateTheme, coverImageH = 0): Page[] {
   if (blocks.length === 0) return []
 
-  const availH = CANVAS_H - theme.padY * 2
+  const normalAvailH = CANVAS_H - theme.padY * 2
+  // When cover image is present, top padding shrinks to 0.75*padY
+  const page0AvailH = coverImageH > 0
+    ? CANVAS_H - coverImageH - Math.round(theme.padY * 0.75) - theme.padY
+    : normalAvailH
 
   const pages: Page[] = []
   let current: Block[] = []
@@ -68,6 +72,7 @@ export function paginate(blocks: Block[], theme: TemplateTheme): Page[] {
 
   for (const block of blocks) {
     const h = estimateHeight(block, theme)
+    const availH = pages.length === 0 ? page0AvailH : normalAvailH
     if (usedH + h > availH && current.length > 0) {
       pages.push({ index: pages.length, blocks: current })
       current = [block]
