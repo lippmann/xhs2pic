@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>xhs2pic article theme mockups</title>
+    <style>
+      :root {
+        --ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --sans-cn: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+        --serif-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+        --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #e9e3d6;
+        color: #20242a;
+        font-family: var(--ui);
+      }
+
+      .page-shell {
+        padding: 26px;
+      }
+
+      .top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 22px;
+      }
+
+      .top h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .top p {
+        margin: 6px 0 0;
+        color: #6f6a60;
+        font-size: 14px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .mock {
+        min-width: 0;
+      }
+
+      .mock-label {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .mock-label strong {
+        font-size: 14px;
+      }
+
+      .mock-label span {
+        color: #706d66;
+        font-size: 12px;
+      }
+
+      .frame {
+        width: 270px;
+        height: 360px;
+        background: white;
+        box-shadow: 0 18px 52px rgba(45, 38, 28, 0.22);
+        overflow: hidden;
+      }
+
+      .card {
+        width: 1080px;
+        height: 1440px;
+        transform: scale(0.25);
+        transform-origin: top left;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .kicker {
+        font-family: var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .paper {
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.32) 1px, transparent 1px),
+          #f7efdf;
+        background-size: 100% 36px;
+        padding: 92px 88px 76px;
+        color: #1f252b;
+        font-family: var(--serif-cn);
+      }
+
+      .paper .kicker {
+        color: #1f5c73;
+        font-size: 25px;
+      }
+
+      .paper h2 {
+        margin: 54px 0 34px;
+        font-size: 78px;
+        line-height: 1.12;
+        font-weight: 700;
+      }
+
+      .paper p {
+        margin: 0 0 27px;
+        font-size: 38px;
+        line-height: 1.78;
+      }
+
+      .paper .quote {
+        margin: 40px 0;
+        padding: 24px 30px;
+        border-left: 7px solid #1f5c73;
+        background: rgba(31, 92, 115, 0.08);
+        font-size: 38px;
+        line-height: 1.7;
+      }
+
+      .paper .footer,
+      .clean .footer,
+      .black .footer,
+      .grid-card .footer {
+        position: absolute;
+        left: 88px;
+        right: 88px;
+        bottom: 66px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 23px;
+      }
+
+      .paper .footer {
+        border-top: 1px solid rgba(31, 37, 43, 0.22);
+        padding-top: 22px;
+        color: #67635b;
+      }
+
+      .clean {
+        padding: 82px 84px 70px;
+        background: #fffefe;
+        color: #172126;
+        font-family: var(--sans-cn);
+      }
+
+      .clean .kicker {
+        display: inline-flex;
+        padding: 12px 18px;
+        border: 2px solid #2e8b73;
+        border-radius: 999px;
+        color: #2e8b73;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .clean h2 {
+        margin: 54px 0 30px;
+        font-size: 76px;
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      .clean p {
+        margin: 0 0 25px;
+        font-size: 37px;
+        line-height: 1.72;
+      }
+
+      .clean .points {
+        margin-top: 42px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .clean .point {
+        display: grid;
+        grid-template-columns: 68px 1fr;
+        gap: 20px;
+        align-items: start;
+        padding: 22px 0;
+        border-top: 2px solid #e2e8e4;
+      }
+
+      .clean .num {
+        color: #2e8b73;
+        font-family: var(--mono);
+        font-size: 30px;
+        font-weight: 700;
+      }
+
+      .clean .point span:last-child {
+        font-size: 34px;
+        line-height: 1.55;
+      }
+
+      .clean .footer {
+        color: #8c8d87;
+      }
+
+      .black {
+        padding: 82px 82px 72px;
+        background: #151515;
+        color: #f5efe6;
+        font-family: var(--serif-cn);
+      }
+
+      .black::before {
+        content: "";
+        position: absolute;
+        left: 82px;
+        top: 82px;
+        bottom: 72px;
+        width: 2px;
+        background: rgba(245, 239, 230, 0.18);
+      }
+
+      .black .inner {
+        margin-left: 42px;
+      }
+
+      .black .kicker {
+        color: #d85f4d;
+        font-size: 25px;
+      }
+
+      .black h2 {
+        margin: 70px 0 46px;
+        font-size: 86px;
+        line-height: 1.04;
+        font-weight: 800;
+      }
+
+      .black p {
+        margin: 0 0 28px;
+        color: #e3ddd3;
+        font-size: 37px;
+        line-height: 1.74;
+      }
+
+      .black .big {
+        margin: 46px 0 32px;
+        padding: 28px 0;
+        border-top: 2px solid rgba(245, 239, 230, 0.22);
+        border-bottom: 2px solid rgba(245, 239, 230, 0.22);
+        color: #ffffff;
+        font-size: 48px;
+        line-height: 1.34;
+      }
+
+      .black .footer {
+        left: 124px;
+        color: rgba(245, 239, 230, 0.56);
+      }
+
+      .grid-card {
+        padding: 76px 80px 70px;
+        background:
+          linear-gradient(#dce9e4 1px, transparent 1px),
+          linear-gradient(90deg, #dce9e4 1px, transparent 1px),
+          #f7fbf7;
+        background-size: 36px 36px;
+        color: #172d2b;
+        font-family: var(--sans-cn);
+      }
+
+      .grid-card .kicker {
+        color: #b33d5a;
+        font-size: 25px;
+        font-weight: 700;
+      }
+
+      .grid-card h2 {
+        margin: 44px 0 30px;
+        padding-bottom: 28px;
+        border-bottom: 4px solid #172d2b;
+        font-size: 68px;
+        line-height: 1.12;
+      }
+
+      .grid-card .stage-list {
+        display: grid;
+        gap: 20px;
+        margin-top: 34px;
+      }
+
+      .grid-card .stage {
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 20px;
+        padding: 24px;
+        border: 3px solid #172d2b;
+        background: rgba(255, 255, 255, 0.66);
+      }
+
+      .grid-card .stage strong {
+        font-family: var(--mono);
+        color: #b33d5a;
+        font-size: 31px;
+      }
+
+      .grid-card .stage span {
+        font-size: 33px;
+        line-height: 1.48;
+      }
+
+      .grid-card .note {
+        margin-top: 36px;
+        padding: 24px;
+        background: #172d2b;
+        color: #f7fbf7;
+        font-size: 35px;
+        line-height: 1.54;
+      }
+
+      .grid-card .footer {
+        color: #61716c;
+      }
+
+      @media (min-width: 1500px) {
+        .frame {
+          width: 324px;
+          height: 432px;
+        }
+
+        .card {
+          transform: scale(0.3);
+        }
+      }
+
+      @media (max-width: 1180px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="top">
+        <div>
+          <h1>文章代入四主题 mockup</h1>
+          <p>文章：AI时代，创业路径会发生哪些变化？ · 每张画布基准 1080×1440 px</p>
+        </div>
+        <p>当前展示每套主题的第 1 张图视觉方向</p>
+      </header>
+
+      <section class="grid">
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Kami Paper</strong>
+            <span>纸感长文 / 01</span>
+          </div>
+          <div class="frame">
+            <article class="card paper">
+              <div class="kicker">AI NATIVE STARTUP / 01</div>
+              <h2>AI时代，创业路径会发生哪些变化？</h2>
+              <p>Claude 官方博客发布了一份给创业者的 AI 原生应用创业手册，底层诉求是让更多创业者选择 Claude。</p>
+              <p>但它真正有意思的地方，是把 AI 对创业范式的改变讲得很清楚。</p>
+              <div class="quote">AI 让“10 人独角兽公司”变成一种可设计的组织形态。</div>
+              <div class="footer">
+                <span>xhs2pic · Kami Paper</span>
+                <span>01 / 06</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Clean Note</strong>
+            <span>知识笔记 / 01</span>
+          </div>
+          <div class="frame">
+            <article class="card clean">
+              <div class="kicker">AI 创业手册</div>
+              <h2>创业链条没变，但链路被 AI 压缩了</h2>
+              <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营。</p>
+              <p>真正的差异化，正在转向一个更尖锐的问题：有没有好点子。</p>
+              <div class="points">
+                <div class="point"><span class="num">01</span><span>生命周期被重置：从 build 优先，转向验证优先。</span></div>
+                <div class="point"><span class="num">02</span><span>创始人要求变了：从亲自干活，转向指挥 AI 干活。</span></div>
+              </div>
+              <div class="footer">
+                <span>Clean Note</span>
+                <span>01 / 06</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Editorial Black</strong>
+            <span>观点杂志 / 01</span>
+          </div>
+          <div class="frame">
+            <article class="card black">
+              <div class="inner">
+                <div class="kicker">ANTHROPIC BETS ON FOUNDERS</div>
+                <h2>未来最强的创始人，不一定最会写代码。</h2>
+                <p>这篇博客当然是 Anthropic 的广告。但所有厉害的广告，本质都在下注未来。</p>
+                <div class="big">当创业门槛越来越低，问题只剩一个：你能造出什么？</div>
+                <p>AI 原生创业的关键，不再只是效率，而是组织形态本身被重新设计。</p>
+              </div>
+              <div class="footer">
+                <span>Editorial Black</span>
+                <span>01 / 06</span>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Soft Grid</strong>
+            <span>阶段拆解 / 01</span>
+          </div>
+          <div class="frame">
+            <article class="card grid-card">
+              <div class="kicker">4 STAGES</div>
+              <h2>Anthropic 拆解的 AI 原生创业路径</h2>
+              <div class="stage-list">
+                <div class="stage"><strong>01</strong><span>Idea Stage：AI 做研究院，先问“为什么会失败”。</span></div>
+                <div class="stage"><strong>02</strong><span>MVP Stage：AI 做产品和工程师，管理好上下文。</span></div>
+                <div class="stage"><strong>03</strong><span>Launch Stage：AI 做运营，创始人变成系统设计者。</span></div>
+              </div>
+              <div class="note">核心变化：创业不是少做事，而是把一整条链路压缩到更少的人和更短的时间里。</div>
+              <div class="footer">
+                <span>Soft Grid</span>
+                <span>01 / 06</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

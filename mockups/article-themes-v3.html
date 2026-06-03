@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>xhs2pic · 主题 v3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=LXGW+WenKai:wght@400&family=EB+Garamond:wght@400;500&family=Lora:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --serif-cn: "Noto Serif SC","Source Han Serif SC","Songti SC","STSong",Georgia,serif;
+        --sans-cn:  "Noto Sans SC","Source Han Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+        --wenkai:   "LXGW WenKai","Noto Serif SC","Songti SC",serif;
+        --en:       "EB Garamond",Charter,Georgia,serif;
+        --lora:     "Lora","EB Garamond",Georgia,serif;
+        --parchment: #f5f4ed;
+        --near-black:#141413;
+        --dark-warm: #3d3d3a;
+        --olive:     #504e49;
+        --stone:     #6b6a64;
+        --brand:     #1B365D;
+        --border:    #e8e6dc;
+        --deep-dark: #141413;
+      }
+      * { box-sizing:border-box; margin:0; padding:0; }
+      body { background:#1e1d1b; color:#d4cfc6; font-family:var(--en); }
+
+      .shell { padding:40px 36px 60px; max-width:1800px; margin:0 auto; }
+
+      .shell-header {
+        display:flex; align-items:flex-end; justify-content:space-between;
+        margin-bottom:36px; padding-bottom:16px;
+        border-bottom:1px solid rgba(212,207,198,.1);
+      }
+      .shell-header h1 { font-size:16px; font-weight:400; letter-spacing:.04em; color:#a0998e; }
+      .shell-header p  { margin-top:4px; font-size:12px; color:#4e4c48; }
+      .shell-header .meta { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#3e3c38; }
+
+      .theme-section { margin-bottom:56px; }
+      .theme-label {
+        display:flex; align-items:center; gap:16px; margin-bottom:20px;
+      }
+      .theme-label strong { font-size:13px; font-weight:500; letter-spacing:.06em; color:#c0bbb0; }
+      .theme-label span   { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#4a4844; }
+      .theme-label::after { content:''; flex:1; height:1px; background:rgba(212,207,198,.07); }
+
+      .card-row { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
+      .card-wrap { position:relative; }
+      .card-num {
+        position:absolute; top:-20px; left:0;
+        font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#3a3834;
+      }
+
+      /* frame clips the scaled card */
+      .frame {
+        width:243px; height:324px; overflow:hidden;
+        box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 18px 48px rgba(0,0,0,.58);
+      }
+      /* 1080×1440 canvas, scaled to 243×324 */
+      .card {
+        width:1080px; height:1440px;
+        transform:scale(0.225); transform-origin:top left;
+        overflow:hidden; position:relative;
+      }
+
+      /* ══════════════════════════════
+         MERIDIAN — 暖米 · 衬线 · ink-blue
+      ══════════════════════════════ */
+      .m {
+        background:var(--parchment);
+        color:var(--near-black);
+        font-family:var(--serif-cn);
+      }
+      .m-bar { height:7px; background:var(--brand); }
+      .m-body { padding:68px 88px 148px; }
+
+      .m-eye {
+        font-family:var(--en); font-size:24px;
+        letter-spacing:.22em; text-transform:uppercase;
+        color:var(--brand); margin-bottom:40px;
+      }
+      .m h1 {
+        font-size:82px; line-height:1.1; font-weight:500;
+        letter-spacing:-.01em; margin-bottom:0;
+      }
+      .m h1 small {
+        display:block; font-family:var(--en); font-size:28px; font-weight:400;
+        letter-spacing:.06em; color:var(--stone); margin-top:20px; line-height:1.5;
+      }
+      .m .rule { width:44px; height:2px; background:var(--brand); margin:44px 0; }
+      .m p {
+        font-size:42px; line-height:1.76; color:var(--dark-warm); margin-bottom:28px;
+      }
+      .m .lead { font-size:44px; line-height:1.7; color:var(--dark-warm); margin-bottom:28px; }
+      .m .quote {
+        margin:36px 0; padding:38px 44px;
+        border-left:6px solid var(--brand); background:#EEF2F7;
+        font-size:44px; line-height:1.6; color:var(--near-black);
+      }
+      .m-h2 {
+        font-family:var(--en); font-size:24px; font-weight:400;
+        letter-spacing:.18em; text-transform:uppercase;
+        color:var(--brand); margin-bottom:30px; margin-top:8px;
+      }
+      .m .row {
+        display:flex; gap:26px; margin-bottom:26px;
+        font-size:40px; line-height:1.7; color:var(--dark-warm);
+      }
+      .m .row .dash {
+        font-family:var(--en); color:var(--brand); flex-shrink:0;
+        padding-top:4px; min-width:32px;
+      }
+      .m .pull {
+        margin-top:40px; padding:40px 0 0;
+        border-top:1px solid var(--border);
+        font-size:46px; line-height:1.44; font-weight:500; color:var(--near-black);
+      }
+      .m .stg-head {
+        font-size:38px; font-weight:700; color:var(--near-black); margin-bottom:10px;
+      }
+      .m .stg-role {
+        font-family:var(--en); font-size:23px; letter-spacing:.14em;
+        text-transform:uppercase; color:var(--stone); margin-bottom:24px;
+      }
+      .m .divider { height:1px; background:var(--border); margin:36px 0; }
+      .m .folio {
+        position:absolute; left:88px; right:88px; bottom:58px;
+        display:flex; justify-content:space-between;
+        font-family:var(--en); font-size:23px; letter-spacing:.1em; color:var(--stone);
+      }
+      .m .folio::before {
+        content:''; position:absolute; top:-18px; left:0; right:0;
+        height:1px; background:var(--border);
+      }
+
+      /* ══════════════════════════════
+         SULCUS — 极浅暖灰 · 无衬线 · 左脊线
+      ══════════════════════════════ */
+      .s {
+        background:#f8f7f2;
+        color:var(--near-black);
+        font-family:var(--sans-cn);
+      }
+      .s-spine {
+        position:absolute; left:70px; top:0; bottom:0;
+        width:1px; background:rgba(20,20,19,.13);
+      }
+      .s-body { padding:84px 84px 148px 114px; }
+      .s-issue {
+        font-family:var(--en); font-size:21px; letter-spacing:.28em;
+        text-transform:uppercase; color:var(--stone); margin-bottom:36px;
+      }
+      .s h1 {
+        font-size:76px; font-weight:700; line-height:1.06;
+        letter-spacing:-.02em; margin-bottom:22px;
+      }
+      .s .sub {
+        font-size:36px; line-height:1.52; color:var(--olive);
+        padding-bottom:36px; border-bottom:1px solid #dddbd4; margin-bottom:36px;
+      }
+      .s p { font-size:38px; line-height:1.74; color:var(--dark-warm); margin-bottom:26px; }
+      .s .anno {
+        margin:36px 0; padding:0 0 0 36px;
+        border-left:3px solid var(--near-black);
+        font-size:40px; line-height:1.56; color:var(--near-black); font-weight:500;
+      }
+      .s-h2 {
+        font-size:23px; font-weight:700; letter-spacing:.08em;
+        text-transform:uppercase; color:var(--stone); margin-bottom:20px;
+      }
+      .s .sc {
+        border-top:2px solid var(--near-black); padding:28px 0 30px;
+      }
+      .s .sc-head { display:flex; align-items:baseline; gap:18px; margin-bottom:12px; }
+      .s .sc-num {
+        font-family:var(--en); font-size:27px; color:var(--stone);
+        flex-shrink:0; letter-spacing:.06em;
+      }
+      .s .sc-title { font-size:38px; font-weight:700; line-height:1.3; }
+      .s .sc-role {
+        font-family:var(--en); font-size:22px; letter-spacing:.12em;
+        text-transform:uppercase; color:var(--stone); margin-bottom:14px;
+      }
+      .s .sc-body { font-size:35px; line-height:1.66; color:var(--olive); }
+      .s .row { display:flex; gap:20px; margin-bottom:20px; font-size:37px; line-height:1.64; color:var(--dark-warm); }
+      .s .row .dot { flex-shrink:0; color:var(--stone); }
+      .s .pull {
+        margin-top:42px; padding:38px 0 0; border-top:1px solid #dddbd4;
+        font-size:42px; line-height:1.48; font-weight:500;
+      }
+      .s .folio {
+        position:absolute; left:114px; right:84px; bottom:58px;
+        display:flex; justify-content:space-between;
+        font-family:var(--en); font-size:23px; letter-spacing:.1em; color:var(--stone);
+      }
+
+      /* ══════════════════════════════
+         NUIT — 深橄榄黑 · 衬线 · 字重对比
+      ══════════════════════════════ */
+      .n {
+        background:var(--deep-dark);
+        color:#e8e4d8;
+        font-family:var(--serif-cn);
+      }
+      .n-body { padding:84px 88px 148px; }
+      .n-vol {
+        font-family:var(--en); font-size:21px; letter-spacing:.3em;
+        text-transform:uppercase; color:#4a4a46; margin-bottom:46px;
+      }
+      .n h1 {
+        font-size:84px; line-height:1.06; font-weight:700;
+        letter-spacing:-.02em; color:#f0ece2; margin-bottom:0;
+      }
+      .n h1 small {
+        display:block; font-family:var(--en); font-size:27px; font-weight:400;
+        letter-spacing:.08em; color:#4a4a46; margin-top:22px; line-height:1.5;
+      }
+      .n .rule { width:44px; height:1px; background:#2e2e2b; margin:44px 0; }
+      .n p { font-size:40px; line-height:1.76; color:#9c9890; margin-bottom:26px; }
+      .n .tension {
+        margin:42px 0; padding:40px 0;
+        border-top:1px solid #262623; border-bottom:1px solid #262623;
+        font-size:52px; line-height:1.3; font-weight:500; color:#f0ece2;
+      }
+      .n-h2 {
+        font-family:var(--en); font-size:21px; letter-spacing:.28em;
+        text-transform:uppercase; color:#4a4a46; margin-bottom:28px;
+      }
+      .n .row { display:flex; gap:26px; margin-bottom:22px; font-size:38px; line-height:1.66; color:#9c9890; }
+      .n .row .dash { font-family:var(--en); font-size:27px; color:#3e3e3a; flex-shrink:0; padding-top:5px; }
+      .n .quote {
+        margin:36px 0; padding:38px 42px;
+        border-left:4px solid #2e2e2b;
+        font-size:42px; line-height:1.6; color:#c8c4ba;
+      }
+      .n .sb {
+        padding:28px 0 32px; border-top:1px solid #252523;
+      }
+      .n .sb-head { display:flex; align-items:baseline; gap:20px; margin-bottom:12px; }
+      .n .sb-num { font-family:var(--en); font-size:25px; color:#3e3e3a; flex-shrink:0; letter-spacing:.08em; }
+      .n .sb-title { font-size:42px; font-weight:700; line-height:1.24; color:#e4e0d4; }
+      .n .sb-role {
+        font-family:var(--en); font-size:22px; letter-spacing:.12em;
+        text-transform:uppercase; color:#4a4a46; margin-bottom:14px;
+      }
+      .n .sb-body { font-size:36px; line-height:1.68; color:#7a7870; }
+      .n .pull {
+        margin-top:44px; padding:40px 0 0; border-top:1px solid #262623;
+        font-size:48px; line-height:1.36; font-weight:500; color:#f0ece2;
+      }
+      .n .tag-row { display:flex; gap:14px; margin-top:32px; }
+      .n .tag {
+        padding:13px 26px; border:1px solid #2a2a27;
+        font-family:var(--en); font-size:21px; letter-spacing:.12em;
+        text-transform:uppercase; color:#4a4a46;
+      }
+      .n .folio {
+        position:absolute; left:88px; right:88px; bottom:58px;
+        display:flex; justify-content:space-between;
+        font-family:var(--en); font-size:23px; letter-spacing:.12em; color:#2e2e2b;
+      }
+
+      /* ══════════════════════════════
+         WENKAI — 淡杏底 · 文楷 · 文学温度
+      ══════════════════════════════ */
+      .w {
+        background:#f9f6ef;
+        color:#1e1c18;
+        font-family:var(--wenkai);
+      }
+      .w-body { padding:80px 90px 148px; }
+      .w-ch {
+        display:flex; align-items:center; gap:20px; margin-bottom:44px;
+      }
+      .w-ch .cn {
+        font-family:var(--lora); font-size:60px; font-weight:400;
+        line-height:1; color:#c8b89a; flex-shrink:0;
+      }
+      .w-ch .cl { flex:1; height:1px; background:#d4cbb8; }
+      .w-ch .ct { font-size:24px; letter-spacing:.22em; color:#9e9484; white-space:nowrap; }
+      .w h1 {
+        font-size:74px; line-height:1.18; font-weight:500;
+        letter-spacing:.02em; margin-bottom:0;
+      }
+      .w h1 small {
+        display:block; font-family:var(--en); font-size:27px; font-weight:400;
+        letter-spacing:.06em; color:#9e9484; margin-top:18px; line-height:1.5;
+      }
+      .w .rule { width:44px; height:1px; background:#d4cbb8; margin:40px 0; }
+      .w p { font-size:40px; line-height:1.88; color:#3d3a32; letter-spacing:.04em; margin-bottom:26px; }
+      .w .verse {
+        margin:38px 0; padding:34px 42px;
+        background:#f1ece2; border-left:3px solid #c8b89a;
+        font-size:40px; line-height:1.78; color:#2c2a24; letter-spacing:.04em;
+      }
+      .w-h2 {
+        font-size:30px; font-weight:500; letter-spacing:.2em;
+        color:#9e9484; margin-bottom:22px;
+      }
+      .w .si { padding:26px 0; border-top:1px solid #e0d9cc; }
+      .w .si-head { display:flex; align-items:baseline; gap:18px; margin-bottom:10px; }
+      .w .si-num { font-family:var(--lora); font-size:33px; color:#c8b89a; flex-shrink:0; }
+      .w .si-title { font-size:40px; font-weight:500; line-height:1.3; letter-spacing:.02em; }
+      .w .si-role {
+        font-family:var(--en); font-size:22px; letter-spacing:.12em;
+        color:#b4a892; margin-bottom:12px;
+      }
+      .w .si-body { font-size:36px; line-height:1.74; color:#5a5448; letter-spacing:.03em; }
+      .w .row { display:flex; gap:20px; margin-bottom:20px; font-size:38px; line-height:1.72; color:#3d3a32; letter-spacing:.03em; }
+      .w .row .wi { color:#c8b89a; flex-shrink:0; }
+      .w .pull {
+        margin-top:40px; padding:36px 0 0; border-top:1px solid #d4cbb8;
+        font-size:44px; line-height:1.54; font-weight:500; letter-spacing:.02em;
+      }
+      .w .folio {
+        position:absolute; left:90px; right:90px; bottom:58px;
+        display:flex; justify-content:space-between;
+        font-family:var(--lora); font-size:23px; letter-spacing:.1em; color:#9e9484;
+      }
+      .w .folio::before {
+        content:''; position:absolute; top:-16px; left:0; right:0;
+        height:1px; background:#d4cbb8;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="shell-header">
+        <div>
+          <h1>xhs2pic · 主题 v3</h1>
+          <p>AI时代，创业路径会发生哪些变化？ · 1080×1440 px · 每套 6 张</p>
+        </div>
+        <div class="meta">四套主题 · 完整分页</div>
+      </header>
+
+
+      <!-- ══════════════════ MERIDIAN ══════════════════ -->
+      <section class="theme-section">
+        <div class="theme-label">
+          <strong>Meridian</strong>
+          <span>衬线 · 暖米 · ink-blue</span>
+        </div>
+        <div class="card-row">
+
+          <!-- M1 封面 -->
+          <div class="card-wrap">
+            <div class="card-num">01</div>
+            <div class="frame"><article class="card m">
+              <div class="m-bar"></div>
+              <div class="m-body">
+                <div class="m-eye">AI &amp; Startup · 01 / 06</div>
+                <h1>AI时代，创业路径会发生哪些变化？<small>The Founder's Playbook · Anthropic</small></h1>
+                <div class="rule"></div>
+                <p class="lead">Claude 官方博客发布了一份给创业者的 AI 原生应用创业手册。底层诉求是让更多创业者选择 Claude，但主题高屋建瓴——它讲的是 AI 对整个创业范式的全面改变，而不只是工具层面的效率提升。</p>
+                <p>文章有一个激进的核心判断：AI 让"10 人独角兽公司"变成一种可以被设计的组织形态。意味着以后很多估值几十亿美金的公司，可能真的只需要个位数到十几个人。</p>
+                <div class="quote">创业的门槛在降低。但真正的稀缺，从来不是执行力——是判断力。当门槛被放低之后，你能造出什么？</div>
+              </div>
+              <div class="m folio"><span>xhs2pic</span><span>01 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- M2 创业链路 -->
+          <div class="card-wrap">
+            <div class="card-num">02</div>
+            <div class="frame"><article class="card m">
+              <div class="m-bar"></div>
+              <div class="m-body">
+                <div class="m-eye">一 · 创业生命周期</div>
+                <div class="m-h2">创业链条被AI压缩了</div>
+                <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营——这是当下的现状。创业链条上具体的事情没有变，但这条链路被 AI 压缩了，真正的差异化已经转向了「有没有好点子」。</p>
+                <p>以前衡量一个创业团队，问的是"你们能不能把这件事做出来"。现在这个问题的答案越来越接近"能"——AI 把这个门槛几乎抹平了。所以真正的问题变成了：你做的这件事，值不值得做？</p>
+                <div class="quote">执行力从壁垒变成了门票。真正的稀缺，是在开始之前就判断对的能力。</div>
+                <p>这也意味着创业的失败点在前移。不是死在产品做不出来，而是死在做出来了却发现没人要。</p>
+              </div>
+              <div class="m folio"><span>xhs2pic</span><span>02 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- M3 创始人角色 -->
+          <div class="card-wrap">
+            <div class="card-num">03</div>
+            <div class="frame"><article class="card m">
+              <div class="m-bar"></div>
+              <div class="m-body">
+                <div class="m-eye">二 · 创始人角色</div>
+                <div class="m-h2">现在搭建的是AI军团</div>
+                <p>创始人仍然需要搭建团队，但现在搭建的是 AI 军团了。市场研究、写文档、写代码、产品设计、运营流程——这条链路上大多数事情，都可以交给 AI Agent 去做。</p>
+                <div class="row"><span class="dash">—</span><span>创始人从「亲自干活＋管人」，变成「指挥 AI 干活」的系统设计者。</span></div>
+                <div class="row"><span class="dash">—</span><span>判断什么该做、什么不该做，比知道怎么做更重要。</span></div>
+                <div class="row"><span class="dash">—</span><span>AI 是执行层，人是方向层——这个分工越来越清晰。</span></div>
+                <div class="pull">管理者不再管人，而是管系统。你是 AI 军团的架构师，不是流水线上的工人。</div>
+              </div>
+              <div class="m folio"><span>xhs2pic</span><span>03 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- M4 阶段1-2 -->
+          <div class="card-wrap">
+            <div class="card-num">04</div>
+            <div class="frame"><article class="card m">
+              <div class="m-bar"></div>
+              <div class="m-body">
+                <div class="m-eye">三 · AI原生创业路径（上）</div>
+                <div class="stg-head">01 · Idea Stage 想法验证</div>
+                <div class="stg-role">AI 做研究院</div>
+                <p>很多 AI 创业的死法是：一天做出 demo，一周觉得自己 PMF，一个月后发现没人留存。Anthropic 建议在开始时不要着急 build，先反复问 Claude：「为什么它会失败？」「用户为什么不会买？」「竞争对手为什么会赢？」——通过负面问题来验证 idea 是否真的值得做，而不是问「这个 idea 好不好」。</p>
+                <div class="divider"></div>
+                <div class="stg-head">02 · MVP Stage 最小产品</div>
+                <div class="stg-role">AI 做产品 + 工程师</div>
+                <p>这个阶段核心是管理好上下文，维护好 CLAUDE.md，避免 AI 在 coding 时从零开始。MVP 做出来后，用肖恩·埃利斯的 40% 规则验证 PMF：超过 40% 的活跃用户表示「如果无法再使用此产品会非常失望」，才算有效信号。</p>
+              </div>
+              <div class="m folio"><span>xhs2pic</span><span>04 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- M5 阶段3-4 -->
+          <div class="card-wrap">
+            <div class="card-num">05</div>
+            <div class="frame"><article class="card m">
+              <div class="m-bar"></div>
+              <div class="m-body">
+                <div class="m-eye">三 · AI原生创业路径（下）</div>
+                <div class="stg-head">03 · Launch Stage 启动增长</div>
+                <div class="stg-role">AI 做运营</div>
+                <p>这个阶段要求创始人完成一次身份转变：从 builder 转向系统设计者。既要判断规模化的可能性，也要处理 MVP 阶段大概率遗留的 dirty code。AI 接管运营层的重复性工作，创始人专注于系统架构和关键决策。</p>
+                <div class="divider"></div>
+                <div class="stg-head">04 · Scale Stage 规模化</div>
+                <div class="stg-role">AI 管公司（？）</div>
+                <p>这个阶段 AI 能完成的其实有限。Anthropic 说 AI 能帮你管理公司，但公司规模化的复杂程度——组织协调、文化建设、战略取舍——显然远超做一个 MVP 的难度。这里值得打一个问号。也许这个阶段，AI 更像是强力工具，而不是管理者。</p>
+              </div>
+              <div class="m folio"><span>xhs2pic</span><span>05 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- M6 结尾 -->
+          <div class="card-wrap">
+            <div class="card-num">06</div>
+            <div class="frame"><article class="card m">
+              <div class="m-bar"></div>
+              <div class="m-body">
+                <div class="m-eye">结 · Closing</div>
+                <div class="m-h2">这是广告，也是一种下注</div>
+                <p>这篇博客当然是 Anthropic 的广告。但所有厉害的广告，本质都在下注未来——它不是在描述现在，而是在塑造一种它希望成真的叙事。</p>
+                <p>Anthropic 赌的是：未来最强的创始人，不一定是最会写代码的人。当创业门槛越来越低，当 AI 把执行力变成标配，稀缺的是判断力——判断什么值得做，以及为什么现在是做它的时候。</p>
+                <div class="quote">当门槛被放低之后，你能造出什么？这个问题，过去是留给少数人的。现在它留给了所有人。</div>
+                <p>创业生命周期被重置，创始人角色被重新定义。AI 原生创业的核心，不是用 AI 提效，而是重新思考一家公司该是什么样子的。</p>
+              </div>
+              <div class="m folio"><span>xhs2pic</span><span>06 · 06</span></div>
+            </article></div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ══════════════════ SULCUS ══════════════════ -->
+      <section class="theme-section">
+        <div class="theme-label">
+          <strong>Sulcus</strong>
+          <span>无衬线 · 极浅暖灰 · 左脊线</span>
+        </div>
+        <div class="card-row">
+
+          <!-- S1 -->
+          <div class="card-wrap">
+            <div class="card-num">01</div>
+            <div class="frame"><article class="card s">
+              <div class="s-spine"></div>
+              <div class="s-body">
+                <div class="s-issue">Essay / No.01</div>
+                <h1 class="s">AI时代，创业路径会发生哪些变化？</h1>
+                <p class="sub">Claude《The Founder's Playbook》创业手册笔记</p>
+                <p>这篇博客的底层诉求是让更多创业者选择 Claude，但主题却很高屋建瓴——它讲的是 AI 对整个创业范式的全面改变，而不只是工具层面的效率提升。</p>
+                <p>文章有一个激进的核心判断：AI 让"10 人独角兽公司"变成一种可以被设计的组织形态。以后很多估值几十亿的公司，可能真的只需要十几个人。</p>
+                <div class="pull">执行力从壁垒变成了门票。真正稀缺的，是判断力。</div>
+              </div>
+              <div class="s folio"><span>xhs2pic</span><span>01 / 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- S2 -->
+          <div class="card-wrap">
+            <div class="card-num">02</div>
+            <div class="frame"><article class="card s">
+              <div class="s-spine"></div>
+              <div class="s-body">
+                <div class="s-issue">一 · 创业链路</div>
+                <h1 class="s" style="font-size:70px;">创业链条没变，但被AI压缩了</h1>
+                <p class="sub">真正的差异化转向了「有没有好点子」</p>
+                <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营，这是当下的现状。创业链条上具体的事情没有变，但这条链路被 AI 压缩了。</p>
+                <p>以前衡量一个创业团队，问的是「你们能不能把这件事做出来」。现在这个问题的答案越来越接近「能」。所以真正的问题变成了：你做的这件事，值不值得做？</p>
+                <div class="anno">这意味着创业的失败点在前移——不是死在产品做不出来，而是死在做出来了却发现没人要。</div>
+              </div>
+              <div class="s folio"><span>xhs2pic</span><span>02 / 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- S3 -->
+          <div class="card-wrap">
+            <div class="card-num">03</div>
+            <div class="frame"><article class="card s">
+              <div class="s-spine"></div>
+              <div class="s-body">
+                <div class="s-issue">二 · 创始人角色</div>
+                <h1 class="s" style="font-size:70px;">现在搭建的是AI军团</h1>
+                <p class="sub">从亲自干活，变成指挥 AI 干活的系统设计者</p>
+                <div class="row"><span class="dot">—</span><span>市场研究、写文档、写代码、产品设计、运营流程，都可以交给 AI Agent。</span></div>
+                <div class="row"><span class="dot">—</span><span>创始人从「亲自干活＋管人」，变成「指挥 AI 干活」的人。</span></div>
+                <div class="row"><span class="dot">—</span><span>判断什么该做、什么不该做，比知道怎么做更重要。</span></div>
+                <div class="row"><span class="dot">—</span><span>AI 是执行层，人是方向层——这个分工越来越清晰。</span></div>
+                <div class="anno">管理者不再管人，而是管系统。你是 AI 军团的架构师，不是流水线上的工人。</div>
+              </div>
+              <div class="s folio"><span>xhs2pic</span><span>03 / 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- S4 -->
+          <div class="card-wrap">
+            <div class="card-num">04</div>
+            <div class="frame"><article class="card s">
+              <div class="s-spine"></div>
+              <div class="s-body">
+                <div class="s-issue">三 · AI创业路径 01—02</div>
+                <div class="sc">
+                  <div class="sc-head"><span class="sc-num">01</span><span class="sc-title">Idea Stage · 想法验证</span></div>
+                  <div class="sc-role">AI 做研究院</div>
+                  <div class="sc-body">很多 AI 创业的死法是一天 demo、一周 PMF、一个月后没人留存。建议不要着急 build，先反复问 Claude：「为什么它会失败？」「用户为什么不会买？」「竞争对手为什么会赢？」——用负面问题验证 idea 是否值得做，而不是问「这个 idea 好不好」。</div>
+                </div>
+                <div class="sc" style="margin-top:4px;">
+                  <div class="sc-head"><span class="sc-num">02</span><span class="sc-title">MVP Stage · 最小产品</span></div>
+                  <div class="sc-role">AI 做产品 + 工程师</div>
+                  <div class="sc-body">核心是管理好上下文，维护好 CLAUDE.md，避免 AI 从零开始。MVP 后用肖恩·埃利斯的 40% 规则验证 PMF：超过 40% 活跃用户表示「无法使用会非常失望」，才算有效信号。</div>
+                </div>
+              </div>
+              <div class="s folio"><span>xhs2pic</span><span>04 / 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- S5 -->
+          <div class="card-wrap">
+            <div class="card-num">05</div>
+            <div class="frame"><article class="card s">
+              <div class="s-spine"></div>
+              <div class="s-body">
+                <div class="s-issue">三 · AI创业路径 03—04</div>
+                <div class="sc">
+                  <div class="sc-head"><span class="sc-num">03</span><span class="sc-title">Launch Stage · 启动增长</span></div>
+                  <div class="sc-role">AI 做运营</div>
+                  <div class="sc-body">要求创始人完成身份转变：从 builder 转向系统设计者。判断规模化的可能性，同时处理 MVP 阶段大概率遗留的 dirty code。AI 接管运营层的重复性工作，创始人专注于系统架构和关键决策。</div>
+                </div>
+                <div class="sc" style="margin-top:4px;">
+                  <div class="sc-head"><span class="sc-num">04</span><span class="sc-title">Scale Stage · 规模化</span></div>
+                  <div class="sc-role">AI 管公司（？）</div>
+                  <div class="sc-body">这个阶段 AI 能完成的有限。Anthropic 说 AI 能帮你管理公司，但公司规模化的复杂程度——组织协调、文化建设、战略取舍——显然远超做一个 MVP。也许这个阶段，AI 更像是强力工具，而不是管理者。这里值得打一个问号。</div>
+                </div>
+              </div>
+              <div class="s folio"><span>xhs2pic</span><span>05 / 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- S6 -->
+          <div class="card-wrap">
+            <div class="card-num">06</div>
+            <div class="frame"><article class="card s">
+              <div class="s-spine"></div>
+              <div class="s-body">
+                <div class="s-issue">结 · Closing</div>
+                <h1 class="s" style="font-size:68px;">这是广告，也是一种下注。</h1>
+                <p style="margin-top:34px;">这篇博客当然是 Anthropic 的广告。但所有厉害的广告，本质都在下注未来——它不是在描述现在，而是在塑造一种它希望成真的叙事。</p>
+                <p>Anthropic 赌的是：未来最强的创始人，不一定是最会写代码的人。当 AI 把执行力变成标配，稀缺的是判断力——判断什么值得做，以及为什么现在是做它的时候。</p>
+                <div class="anno">当门槛被放低之后，你能造出什么？这个问题，过去是留给少数人的。现在它留给了所有人。</div>
+              </div>
+              <div class="s folio"><span>xhs2pic</span><span>06 / 06</span></div>
+            </article></div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ══════════════════ NUIT ══════════════════ -->
+      <section class="theme-section">
+        <div class="theme-label">
+          <strong>Nuit</strong>
+          <span>衬线 · 深橄榄黑 · 字重对比</span>
+        </div>
+        <div class="card-row">
+
+          <!-- N1 -->
+          <div class="card-wrap">
+            <div class="card-num">01</div>
+            <div class="frame"><article class="card n">
+              <div class="n-body">
+                <div class="n-vol">Longform · 01 / 06</div>
+                <h1 class="n">AI时代，创业路径会发生哪些变化？<small>The Founder's Playbook · Anthropic</small></h1>
+                <div class="rule"></div>
+                <p>Claude 发布了一份给创业者的 AI 原生应用手册。底层是广告，但讲的是真问题：AI 对创业范式的全面改变。不只是工具层面的效率提升，而是整个创业的逻辑在重写。</p>
+                <div class="tension">AI 让"10 人独角兽公司"变成一种可以被设计的组织形态。</div>
+              </div>
+              <div class="n folio"><span>xhs2pic</span><span>01 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- N2 -->
+          <div class="card-wrap">
+            <div class="card-num">02</div>
+            <div class="frame"><article class="card n">
+              <div class="n-body">
+                <div class="n-vol">一 · 创业链路 · 02</div>
+                <h1 class="n" style="font-size:74px;">创业链条被AI压缩了</h1>
+                <div class="rule"></div>
+                <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营。创业链条上具体的事情没变，但链路被 AI 压缩了，差异化已经转向「有没有好点子」。</p>
+                <p>以前问的是「你们能不能把这件事做出来」，现在这个问题的答案越来越接近「能」。所以真正的问题变成了：你做的这件事，值不值得做？</p>
+                <div class="tension">执行力从壁垒变成了门票。真正稀缺的，是在开始之前就判断对的能力。</div>
+              </div>
+              <div class="n folio"><span>xhs2pic</span><span>02 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- N3 -->
+          <div class="card-wrap">
+            <div class="card-num">03</div>
+            <div class="frame"><article class="card n">
+              <div class="n-body">
+                <div class="n-vol">二 · 创始人 · 03</div>
+                <h1 class="n" style="font-size:74px;">现在搭建的是AI军团</h1>
+                <div class="rule"></div>
+                <p>创始人仍然需要搭建团队，但现在搭建的是 AI 军团了。市场研究、写文档、写代码、产品设计、运营流程——这条链路上大多数事情，都可以交给 AI Agent。</p>
+                <div class="row"><span class="dash">—</span><span>创始人从「亲自干活＋管人」，变成「指挥 AI」的系统设计者。</span></div>
+                <div class="row"><span class="dash">—</span><span>判断什么该做，比知道怎么做更重要。</span></div>
+                <div class="quote">管理者不再管人，而是管系统。你是 AI 军团的架构师。</div>
+              </div>
+              <div class="n folio"><span>xhs2pic</span><span>03 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- N4 -->
+          <div class="card-wrap">
+            <div class="card-num">04</div>
+            <div class="frame"><article class="card n">
+              <div class="n-body">
+                <div class="n-vol">三 · 路径 01—02 · 04</div>
+                <div class="n-h2">AI原生创业路径（上）</div>
+                <div class="sb">
+                  <div class="sb-head"><span class="sb-num">01</span><span class="sb-title">Idea Stage · 想法验证</span></div>
+                  <div class="sb-role">AI 做研究院</div>
+                  <div class="sb-body">很多 AI 创业死在一天 demo、一周 PMF、一个月后没人留存。建议先问「为什么它会失败」「用户为什么不会买」——用负面问题验证 idea，而不是问「这个 idea 好不好」。</div>
+                </div>
+                <div class="sb">
+                  <div class="sb-head"><span class="sb-num">02</span><span class="sb-title">MVP Stage · 最小产品</span></div>
+                  <div class="sb-role">AI 做产品 + 工程师</div>
+                  <div class="sb-body">管理好 CLAUDE.md，避免 AI 从零开始。MVP 后用 40% 规则验证 PMF：超 40% 活跃用户表示「无法使用会非常失望」，才是有效信号。</div>
+                </div>
+              </div>
+              <div class="n folio"><span>xhs2pic</span><span>04 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- N5 -->
+          <div class="card-wrap">
+            <div class="card-num">05</div>
+            <div class="frame"><article class="card n">
+              <div class="n-body">
+                <div class="n-vol">三 · 路径 03—04 · 05</div>
+                <div class="n-h2">AI原生创业路径（下）</div>
+                <div class="sb">
+                  <div class="sb-head"><span class="sb-num">03</span><span class="sb-title">Launch Stage · 启动增长</span></div>
+                  <div class="sb-role">AI 做运营</div>
+                  <div class="sb-body">创始人完成身份转变：从 builder 转向系统设计者，判断规模化可能，同时清理 MVP 阶段遗留的 dirty code。AI 接管运营层的重复性工作。</div>
+                </div>
+                <div class="sb">
+                  <div class="sb-head"><span class="sb-num">04</span><span class="sb-title">Scale Stage · 规模化</span></div>
+                  <div class="sb-role">AI 管公司（？）</div>
+                  <div class="sb-body">这个阶段 AI 能完成的有限。公司规模化的复杂程度——组织协调、文化建设、战略取舍——远超做一个 MVP 的难度。Anthropic 说 AI 能帮管理公司，但也许这里 AI 更像强力工具，而不是管理者。</div>
+                </div>
+              </div>
+              <div class="n folio"><span>xhs2pic</span><span>05 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- N6 -->
+          <div class="card-wrap">
+            <div class="card-num">06</div>
+            <div class="frame"><article class="card n">
+              <div class="n-body">
+                <div class="n-vol">结 · Closing · 06</div>
+                <p>这篇博客当然是 Anthropic 的广告。</p>
+                <p>但所有厉害的广告，本质都在下注未来——不是在描述现在，而是在塑造一种它希望成真的叙事。</p>
+                <div class="tension">Anthropic 赌的是：未来最强的创始人，不一定是最会写代码的人。</div>
+                <p>当 AI 把执行力变成标配，稀缺的是判断力——判断什么值得做，以及为什么现在是做它的时候。</p>
+                <p>当门槛被放低之后，你能造出什么？这个问题，过去是留给少数人的。现在它留给了所有人。</p>
+                <div class="tag-row">
+                  <div class="tag">AI Native</div>
+                  <div class="tag">Founder</div>
+                  <div class="tag">Startup</div>
+                </div>
+              </div>
+              <div class="n folio"><span>xhs2pic</span><span>06 · 06</span></div>
+            </article></div>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- ══════════════════ WENKAI ══════════════════ -->
+      <section class="theme-section">
+        <div class="theme-label">
+          <strong>Wenkai</strong>
+          <span>文楷 · 淡杏底 · 文学温度</span>
+        </div>
+        <div class="card-row">
+
+          <!-- W1 -->
+          <div class="card-wrap">
+            <div class="card-num">01</div>
+            <div class="frame"><article class="card w">
+              <div class="w-body">
+                <div class="w-ch"><div class="cn">01</div><div class="cl"></div><div class="ct">AI 与创业</div></div>
+                <h1 class="w">AI时代，创业路径会发生哪些变化？<small>The Founder's Playbook · 读书笔记</small></h1>
+                <div class="rule"></div>
+                <p>Claude 官方博客发布了一份给创业者的 AI 原生应用创业手册，底层诉求是让更多创业者选择 Claude，但主题却很高屋建瓴——AI 对整个创业范式的全面改变。</p>
+                <div class="verse">AI 让"10 人独角兽公司"变成一种可以被设计的组织形态——这一点，比任何效率工具都更根本。意味着以后很多估值几十亿美金的公司，可能真的只需要个位数到十几个人。</div>
+              </div>
+              <div class="w folio"><span>xhs2pic</span><span>01 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- W2 -->
+          <div class="card-wrap">
+            <div class="card-num">02</div>
+            <div class="frame"><article class="card w">
+              <div class="w-body">
+                <div class="w-ch"><div class="cn">02</div><div class="cl"></div><div class="ct">创业链路</div></div>
+                <h1 class="w" style="font-size:68px;">创业链条没变，但被AI压缩了</h1>
+                <div class="rule"></div>
+                <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营——这是当下的现状。创业链条上具体的事情没有变，但这条链路被 AI 压缩了，真正的差异化已经转向了「有没有好点子」。</p>
+                <p>以前衡量一个创业团队，问的是「你们能不能把这件事做出来」。现在这个问题的答案越来越接近「能」——AI 几乎把这个门槛抹平了。</p>
+                <div class="verse">真正的问题变成了：你做的这件事，值不值得做？创业的失败点在前移，不是死在产品做不出来，而是死在做出来了却发现没人要。</div>
+              </div>
+              <div class="w folio"><span>xhs2pic</span><span>02 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- W3 -->
+          <div class="card-wrap">
+            <div class="card-num">03</div>
+            <div class="frame"><article class="card w">
+              <div class="w-body">
+                <div class="w-ch"><div class="cn">03</div><div class="cl"></div><div class="ct">创始人角色</div></div>
+                <h1 class="w" style="font-size:68px;">现在搭建的是AI军团</h1>
+                <div class="rule"></div>
+                <p>创始人仍然需要搭建团队，但现在搭建的是 AI 军团了。市场研究、写文档、写代码、产品设计、运营流程，都可以交给 AI Agent。</p>
+                <div class="row"><span class="wi">·</span><span>创始人从「亲自干活＋管人」，变成「指挥 AI 干活」的系统设计者。</span></div>
+                <div class="row"><span class="wi">·</span><span>判断什么该做、什么不该做，比知道怎么做更重要。</span></div>
+                <div class="verse">管理者不再管人，而是管系统。AI 是执行层，人是方向层——你是 AI 军团的架构师，不是流水线上的工人。</div>
+              </div>
+              <div class="w folio"><span>xhs2pic</span><span>03 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- W4 -->
+          <div class="card-wrap">
+            <div class="card-num">04</div>
+            <div class="frame"><article class="card w">
+              <div class="w-body">
+                <div class="w-ch"><div class="cn">04</div><div class="cl"></div><div class="ct">AI创业路径（上）</div></div>
+                <div class="si">
+                  <div class="si-head"><span class="si-num">01</span><span class="si-title">Idea Stage · 想法验证</span></div>
+                  <div class="si-role">AI 做研究院</div>
+                  <div class="si-body">很多 AI 创业的死法是一天 demo、一周 PMF、一个月后没人留存。建议不要着急 build，先反复问 Claude：「为什么它会失败？」「用户为什么不会买？」——用负面问题验证 idea，而不是问「这个 idea 好不好」。</div>
+                </div>
+                <div class="si">
+                  <div class="si-head"><span class="si-num">02</span><span class="si-title">MVP Stage · 最小产品</span></div>
+                  <div class="si-role">AI 做产品 + 工程师</div>
+                  <div class="si-body">核心是管理好上下文，维护好 CLAUDE.md，避免 AI 从零开始。MVP 后用肖恩·埃利斯的 40% 规则验证 PMF：超 40% 活跃用户表示「无法使用会非常失望」，才算有效信号。</div>
+                </div>
+              </div>
+              <div class="w folio"><span>xhs2pic</span><span>04 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- W5 -->
+          <div class="card-wrap">
+            <div class="card-num">05</div>
+            <div class="frame"><article class="card w">
+              <div class="w-body">
+                <div class="w-ch"><div class="cn">05</div><div class="cl"></div><div class="ct">AI创业路径（下）</div></div>
+                <div class="si">
+                  <div class="si-head"><span class="si-num">03</span><span class="si-title">Launch Stage · 启动增长</span></div>
+                  <div class="si-role">AI 做运营</div>
+                  <div class="si-body">要求创始人完成身份转变：从 builder 转向系统设计者。判断规模化的可能性，处理 MVP 阶段大概率遗留的 dirty code。AI 接管运营层的重复性工作，创始人专注于系统架构和关键决策。</div>
+                </div>
+                <div class="si">
+                  <div class="si-head"><span class="si-num">04</span><span class="si-title">Scale Stage · 规模化</span></div>
+                  <div class="si-role">AI 管公司（？）</div>
+                  <div class="si-body">这个阶段 AI 能完成的有限。公司规模化的复杂程度——组织协调、文化建设、战略取舍——显然远超做一个 MVP 的难度。也许这个阶段，AI 更像是强力工具，而不是管理者。这里值得打一个问号。</div>
+                </div>
+              </div>
+              <div class="w folio"><span>xhs2pic</span><span>05 · 06</span></div>
+            </article></div>
+          </div>
+
+          <!-- W6 -->
+          <div class="card-wrap">
+            <div class="card-num">06</div>
+            <div class="frame"><article class="card w">
+              <div class="w-body">
+                <div class="w-ch"><div class="cn">06</div><div class="cl"></div><div class="ct">结语</div></div>
+                <h1 class="w" style="font-size:68px;">这是广告，也是一种下注。</h1>
+                <div class="rule"></div>
+                <p>这篇博客当然是 Anthropic 的广告。但所有厉害的广告，本质都在下注未来——它不是在描述现在，而是在塑造一种它希望成真的叙事。</p>
+                <p>Anthropic 赌的是：未来最强的创始人，不一定是最会写代码的人。当 AI 把执行力变成标配，稀缺的是判断力——判断什么值得做，以及为什么现在是做它的时候。</p>
+                <div class="verse">当门槛被放低之后，你能造出什么？这个问题，过去是留给少数人的。现在它留给了所有人。</div>
+              </div>
+              <div class="w folio"><span>xhs2pic</span><span>06 · 06</span></div>
+            </article></div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>

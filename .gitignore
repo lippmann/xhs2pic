@@ -1,0 +1,10 @@
+.DS_Store
+
+# Font binaries — too large for git; download separately
+app/public/fonts/*.ttf
+
+# Dependencies
+app/node_modules/
+
+# Build output
+app/dist/

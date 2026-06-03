@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>xhs2pic · 完整文章渲染 · Nuit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --serif-cn: "Noto Serif SC","Source Han Serif SC","Songti SC","STSong",Georgia,serif;
+      --en:       "EB Garamond",Charter,Georgia,serif;
+
+      --deep-dark: #141413;
+      --bg:        #141413;
+      --text-main: #e8e4d8;
+      --body-text: #9c9890;
+      --heading:   #f0ece2;
+      --border:    #262623;
+
+      --W:     1080px;
+      --H:     1440px;
+      --PAD-X: 84px;
+      --PAD-Y: 80px;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    body {
+      background: #0e0e0d;
+      font-family: var(--serif-cn);
+      padding: 48px 40px 80px;
+    }
+
+    /* ── 外层展示壳 ── */
+    .shell-header {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      margin-bottom:28px; padding-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      font-family: var(--en);
+    }
+    .shell-header h1 { font-size:14px; font-weight:400; letter-spacing:.04em; color:#666; }
+    .shell-header p  { font-size:11px; color:#3a3836; margin-top:3px; }
+    .shell-header .note { font-size:11px; letter-spacing:.08em; color:#333; }
+
+    .scale-outer {
+      width: calc(var(--W) * 0.58);
+      overflow: visible;
+      margin: 0 auto;
+    }
+    .scale-wrap {
+      transform-origin: top left;
+      transform: scale(0.58);
+      width: var(--W);
+    }
+
+    /* ── 文章主容器 ── */
+    .article-wrap {
+      width: var(--W);
+      background: var(--bg);
+      position: relative;
+    }
+
+    /* ══════════════════════════════
+       封面页  1080 × 1440
+    ══════════════════════════════ */
+    .cover {
+      width: var(--W);
+      height: var(--H);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 题图：上半 660px */
+    .cover-img {
+      width: 100%; height: 660px;
+      overflow: hidden;
+    }
+    .cover-img img {
+      width:100%; height:100%;
+      object-fit:cover; object-position:center 20%;
+      display:block;
+      filter: brightness(0.55);
+    }
+
+    /* 下半信息区 */
+    .cover-info {
+      padding: 56px var(--PAD-X) 0;
+    }
+
+    /* VOL 标签 — EN 字体 */
+    .cover-vol {
+      font-family: var(--en);
+      font-size: 22px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: #4a4a46;
+      margin-bottom: 32px;
+    }
+
+    .cover-title {
+      font-size: 68px; font-weight:700; line-height:1.16;
+      letter-spacing:.02em; color: var(--heading);
+      margin-bottom: 30px;
+    }
+    .cover-lead {
+      font-size:32px; line-height:1.78;
+      color: var(--body-text); letter-spacing:.03em;
+      margin-bottom: 44px;
+    }
+    .cover-author {
+      display:flex; align-items:center; gap:20px;
+    }
+    .cover-author .avatar {
+      width:68px; height:68px; border-radius:50%;
+      overflow:hidden; flex-shrink:0;
+      border: 2px solid var(--border);
+    }
+    .cover-author .avatar img {
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    .cover-author .name {
+      font-size:28px; font-weight:500; color: var(--text-main);
+    }
+
+    /* ══════════════════════════════
+       正文连续流
+    ══════════════════════════════ */
+    .body-flow {
+      padding: var(--PAD-Y) var(--PAD-X);
+    }
+
+    h2 {
+      font-size:44px; font-weight:700; line-height:1.24;
+      letter-spacing:.02em; color: var(--heading);
+      margin-bottom:24px;
+    }
+
+    h3 {
+      font-size:36px; font-weight:500; line-height:1.4;
+      letter-spacing:.02em; color: var(--heading);
+      margin: 42px 0 14px;
+    }
+
+    p {
+      font-size:32px; line-height:1.92;
+      color: var(--body-text); letter-spacing:.04em;
+      margin-bottom:26px;
+    }
+
+    /* 引文：左侧 4px solid #2e2e2b，无背景，文字色 #c8c4ba */
+    .verse {
+      margin: 36px 0;
+      padding: 32px 40px;
+      border-left: 4px solid #2e2e2b;
+      font-size:33px; line-height:1.82;
+      color: #c8c4ba; letter-spacing:.04em;
+    }
+
+    .divider {
+      height:1px; background:var(--border); margin:44px 0;
+    }
+
+    /* ── 截图切割线（mockup 专用） ── */
+    .cut-line {
+      position:absolute; left:0; right:0; height:0;
+      border-top: 2px dashed rgba(255,100,100,0.6);
+      pointer-events:none; z-index:100;
+    }
+    .cut-label {
+      position:absolute; right:14px; top:-24px;
+      font-family: var(--en); font-size:17px;
+      color:rgba(255,100,100,0.7);
+      letter-spacing:.1em; text-transform:uppercase;
+      background:var(--bg); padding:0 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:660px; margin:0 auto;">
+  <div class="shell-header">
+    <div>
+      <h1>xhs2pic · Nuit · 完整文章渲染</h1>
+      <p>连续容器，红色虚线 = 1080×1440 截图切割位</p>
+    </div>
+    <div class="note">科技圈小S</div>
+  </div>
+
+  <div class="scale-outer">
+    <div class="scale-wrap">
+      <div class="article-wrap" id="article">
+
+        <!-- ══ 封面 ══ -->
+        <div class="cover">
+          <div class="cover-img">
+            <img src="avatar.jpg" alt="题图" />
+          </div>
+          <div class="cover-info">
+            <div class="cover-vol">Longform · Vol.01</div>
+            <div class="cover-title">AI时代，创业路径会发生哪些变化？</div>
+            <p class="cover-lead">Claude 官方博客发布了一份给创业者的 AI 原生应用创业手册，底层诉求是让更多创业者选择 Claude，但主题却很高屋建瓴。</p>
+            <div class="cover-author">
+              <div class="avatar"><img src="avatar.jpg" alt="科技圈小S" /></div>
+              <div>
+                <div class="name">科技圈小S</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ 正文流 ══ -->
+        <div class="body-flow" id="body-flow">
+
+          <h2>创业链条被AI压缩了</h2>
+
+          <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营，这是现状。创业链条上具体的事情没变，但这条链路被 AI 压缩了，真正的差异化转向了「有没有好点子」。</p>
+
+          <p>以前衡量一个创业团队，问的是「你们能不能把这件事做出来」。现在这个问题的答案越来越接近「能」——AI 把这个门槛几乎抹平了。所以真正的问题变成了：你做的这件事，值不值得做？</p>
+
+          <div class="verse">执行力从壁垒变成了门票。真正的稀缺，是在开始之前就判断对的能力。当门槛被放低之后，你能造出什么？</div>
+
+          <p>这也意味着创业的失败点在前移。不是死在产品做不出来，而是死在做出来了却发现没人要。AI 原生时代，验证比构建更重要。</p>
+
+          <h2>现在搭建的是AI军团</h2>
+
+          <p>创始人仍然需要搭建团队，但现在搭建的是 AI 军团了。市场研究、写文档、写代码、产品设计、运营流程——这条链路上大多数事情，都可以交给 AI Agent 去做。创始人从「亲自干活＋管人」，变成「指挥 AI 干活」的系统设计者。判断什么该做、什么不该做，比知道怎么做更重要。AI 是执行层，人是方向层——这个分工越来越清晰。</p>
+
+          <div class="verse">管理者不再管人，而是管系统。你是 AI 军团的架构师，不是流水线上的工人。</div>
+
+          <h2>Anthropic 拆解的四个阶段</h2>
+
+          <p>Anthropic 在手册里把 AI 原生创业路径拆成了四个阶段，每个阶段 AI 扮演的角色不同，创始人的重心也不同。</p>
+
+          <h3>1、Idea Stage（想法验证）——AI做研究院</h3>
+          <p>很多AI创业死法是一天做出 demo、一周觉得自己 PMF、一个月后发现没人留存，所以建议在开始的时候不要着急build。问问Claude这几个问题："为什么它会失败？""用户为什么不会买？""竞争对手为什么会赢？"，不要问"这个 idea 好不好？"通过这些问题判定，这个idea是不是真的值得做。</p>
+
+          <h3>2、MVP Stage（最小产品）——AI做产品+工程师</h3>
+          <p>这个阶段核心要求是，必须关注上下文，管理好CLAUDE.md文件，避免AI在coding的时候从零开始。做出MVP之后，用肖恩·埃利斯（增长黑客的作者）测试，询问活跃用户："如果您无法再使用此产品，您会作何感想？"如果超过 40% 的用户回答"非常失望"，这就是一个有意义的产品市场契合度 (PMF) 指标，来判断用户会不会持续使用你的产品。</p>
+
+          <h3>3、Launch Stage（启动增长）——AI做运营</h3>
+          <p>要求创始人从builder身份转向系统设计者，判断规模化可能，同时解决MVP阶段大概率会存在的dirty code。</p>
+
+          <h3>4、Scale Stage（规模化）——AI管公司（？这里打个问号）</h3>
+          <p>其实这个阶段貌似AI能完成的就有限了，虽然Anthropic说AI能够帮你管理公司，但显然复杂程度远远超过做一个MVP吧。</p>
+
+          <h2>这是广告，也是一种下注</h2>
+
+          <p>这篇博客当然是 Anthropic 的广告。但所有厉害的广告，本质都在下注未来——它不是在描述现在，而是在塑造一种它希望成真的叙事。</p>
+
+          <p>Anthropic 赌的是：未来最强的创始人，不一定是最会写代码的人。当 AI 把执行力变成标配，稀缺的是判断力——判断什么值得做，以及为什么现在是做它的时候。</p>
+
+          <div class="verse">当门槛被放低之后，你能造出什么？这个问题，过去是留给少数人的。现在它留给了所有人。</div>
+
+          <p>创业生命周期被重置，创始人角色被重新定义。AI 原生创业的核心，不是用 AI 提效，而是重新思考一家公司该是什么样子的。十个人，能不能做出一家独角兽？Anthropic 的答案是：可以，而且这已经在发生了。</p>
+
+        </div><!-- /body-flow -->
+      </div><!-- /article-wrap -->
+    </div><!-- /scale-wrap -->
+  </div><!-- /scale-outer -->
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    const article  = document.getElementById('article');
+    const bodyFlow = document.getElementById('body-flow');
+    const H        = 1440;
+    const PAD_Y    = 80;
+    const scale    = 0.58;
+
+    const bodyTop = bodyFlow.offsetTop; // = cover height = 1440
+
+    // 按段落分页：如果某元素底部超出当前页内容区，把它推到下一页
+    // 当前页内容区底部（相对 article）= page * H - PAD_Y
+    let page = 1;
+    let pageBottom = page * H - PAD_Y; // 当前页内容最大底部 y（相对 article）
+
+    const children = Array.from(bodyFlow.children);
+    for (const el of children) {
+      const elTopAbs    = bodyTop + el.offsetTop;
+      const elBottomAbs = elTopAbs + el.offsetHeight;
+
+      if (elBottomAbs > pageBottom) {
+        // 需要推到下一页，计算 spacer 高度
+        // 下一页内容起点（相对 article）= page * H + PAD_Y
+        const nextPageContentStart = page * H + PAD_Y;
+        const spacerH = nextPageContentStart - elTopAbs;
+
+        if (spacerH > 0) {
+          const spacer = document.createElement('div');
+          spacer.className = 'page-spacer';
+          spacer.style.height = spacerH + 'px';
+          bodyFlow.insertBefore(spacer, el);
+        }
+
+        page++;
+        pageBottom = page * H - PAD_Y;
+      }
+    }
+
+    // 补齐最后一页
+    const rem = article.offsetHeight % H;
+    if (rem > 0) {
+      const pad = document.createElement('div');
+      pad.style.height = (H - rem) + 'px';
+      article.appendChild(pad);
+    }
+
+    // 画切割线
+    const total = article.offsetHeight;
+    for (let y = H; y < total; y += H) {
+      const line = document.createElement('div');
+      line.className = 'cut-line';
+      line.style.top = y + 'px';
+      const label = document.createElement('div');
+      label.className = 'cut-label';
+      label.textContent = `— ${Math.round(y / H) + 1} —`;
+      line.appendChild(label);
+      article.appendChild(line);
+    }
+
+    document.querySelector('.scale-outer').style.height = (article.offsetHeight * scale) + 'px';
+  });
+</script>
+</body>
+</html>

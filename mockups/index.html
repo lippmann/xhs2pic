@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>xhs2pic mockup</title>
+    <style>
+      :root {
+        --app-bg: #f5f3ee;
+        --panel: #fffdfa;
+        --panel-2: #f0eee8;
+        --ink: #20242a;
+        --muted: #73716c;
+        --line: #d9d3c7;
+        --accent: #1f5c73;
+        --button: #20242a;
+        --button-text: #fffdfa;
+        --radius: 8px;
+        --ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --serif-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+        --sans-cn: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", sans-serif;
+        --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--app-bg);
+        color: var(--ink);
+        font-family: var(--ui);
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 58px 1fr;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 253, 250, 0.82);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .brand strong {
+        font-size: 18px;
+        letter-spacing: 0;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 6px;
+        cursor: default;
+      }
+
+      .btn.primary {
+        background: var(--button);
+        color: var(--button-text);
+        border-color: var(--button);
+      }
+
+      .workspace {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: minmax(360px, 430px) 1fr;
+      }
+
+      .sidebar {
+        min-height: 0;
+        overflow: auto;
+        border-right: 1px solid var(--line);
+        background: var(--panel);
+        padding: 18px;
+      }
+
+      .section {
+        padding: 16px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section:first-child {
+        padding-top: 0;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 13px;
+        text-transform: uppercase;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+
+      .upload-row,
+      .toolbar-row,
+      .control-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        color: var(--muted);
+        background: #fbfaf6;
+        font-size: 13px;
+      }
+
+      .editor {
+        width: 100%;
+        min-height: 300px;
+        resize: vertical;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fffefb;
+        padding: 14px;
+        line-height: 1.72;
+        color: var(--ink);
+        outline: none;
+      }
+
+      .asset-row {
+        display: grid;
+        grid-template-columns: 58px 1fr auto;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fbfaf6;
+      }
+
+      .asset-thumb {
+        width: 58px;
+        aspect-ratio: 1;
+        border-radius: 6px;
+        background:
+          linear-gradient(135deg, rgba(31, 92, 115, 0.18), transparent 42%),
+          linear-gradient(45deg, #e2d7c3, #f5efe1);
+      }
+
+      .asset-meta strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .asset-meta span {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .select,
+      .range {
+        width: 100%;
+        height: 34px;
+      }
+
+      .field {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .template-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .template-option {
+        display: grid;
+        grid-template-columns: 22px 1fr auto;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fbfaf6;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border: 1px solid var(--ink);
+        border-radius: 50%;
+      }
+
+      .template-option.active .dot {
+        background: var(--ink);
+        box-shadow: inset 0 0 0 3px #fffdfa;
+      }
+
+      .template-option strong {
+        display: block;
+        font-size: 14px;
+      }
+
+      .template-option span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .swatch {
+        width: 34px;
+        height: 24px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+      }
+
+      .main {
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        display: grid;
+        grid-template-rows: 48px 1fr 144px;
+        background: #ede8dc;
+      }
+
+      .previewbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        border-bottom: 1px solid var(--line);
+        background: #faf8f2;
+      }
+
+      .previewbar strong {
+        font-size: 14px;
+      }
+
+      .preview-meta {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .stage {
+        min-height: 0;
+        overflow: auto;
+        display: grid;
+        place-items: start center;
+        padding: 26px 28px;
+      }
+
+      .canvas-wrap {
+        width: 432px;
+        height: 576px;
+        aspect-ratio: 3 / 4;
+        background: #fffdfa;
+        box-shadow: 0 22px 70px rgba(44, 38, 28, 0.22);
+        overflow: hidden;
+      }
+
+      .xhs-card {
+        width: 1080px;
+        height: 1440px;
+        transform-origin: top left;
+        transform: scale(0.4);
+        overflow: hidden;
+      }
+
+      .paper {
+        position: relative;
+        padding: 98px 92px 76px;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.28) 1px, transparent 1px),
+          #f8f0df;
+        background-size: 100% 36px;
+        color: #20242a;
+        font-family: var(--serif-cn);
+      }
+
+      .paper .kicker {
+        font-family: var(--mono);
+        color: #1f5c73;
+        font-size: 25px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .paper h1 {
+        margin: 62px 0 44px;
+        font-size: 82px;
+        line-height: 1.12;
+        font-weight: 700;
+      }
+
+      .paper p {
+        margin: 0 0 31px;
+        font-size: 40px;
+        line-height: 1.82;
+      }
+
+      .paper blockquote {
+        margin: 46px 0;
+        padding: 24px 30px;
+        border-left: 7px solid #1f5c73;
+        background: rgba(31, 92, 115, 0.08);
+        font-size: 39px;
+        line-height: 1.72;
+      }
+
+      .paper .footer {
+        position: absolute;
+        left: 92px;
+        right: 92px;
+        bottom: 70px;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid rgba(32, 36, 42, 0.22);
+        padding-top: 22px;
+        font-family: var(--mono);
+        color: #62625e;
+        font-size: 24px;
+      }
+
+      .thumbs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        padding: 14px 18px;
+        border-top: 1px solid var(--line);
+        background: #faf8f2;
+        overflow: auto;
+      }
+
+      .thumb {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 10px;
+        min-width: 190px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+      }
+
+      .mini {
+        width: 54px;
+        aspect-ratio: 3 / 4;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+      }
+
+      .mini.paper-mini {
+        background: #f8f0df;
+      }
+
+      .mini.clean-mini {
+        background: #ffffff;
+      }
+
+      .mini.black-mini {
+        background: #171717;
+      }
+
+      .mini.grid-mini {
+        background:
+          linear-gradient(#dfe9e7 1px, transparent 1px),
+          linear-gradient(90deg, #dfe9e7 1px, transparent 1px),
+          #f7fbf7;
+        background-size: 12px 12px;
+      }
+
+      .thumb strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .thumb span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .style-board {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        padding: 22px;
+        border-top: 1px solid var(--line);
+        background: var(--app-bg);
+      }
+
+      .style-card {
+        min-height: 360px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--panel);
+      }
+
+      .style-preview {
+        height: 260px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .style-preview h3 {
+        margin: 0;
+      }
+
+      .style-preview p {
+        margin: 12px 0 0;
+      }
+
+      .paper-style {
+        background: #f8f0df;
+        color: #20242a;
+        font-family: var(--serif-cn);
+      }
+
+      .clean-style {
+        background: #ffffff;
+        color: #1d2528;
+        font-family: var(--sans-cn);
+      }
+
+      .black-style {
+        background: #171717;
+        color: #f4f0e8;
+        font-family: Georgia, "Noto Serif SC", serif;
+      }
+
+      .grid-style {
+        background:
+          linear-gradient(#dfe9e7 1px, transparent 1px),
+          linear-gradient(90deg, #dfe9e7 1px, transparent 1px),
+          #f7fbf7;
+        background-size: 24px 24px;
+        color: #172d2b;
+        font-family: var(--sans-cn);
+      }
+
+      .style-info {
+        padding: 12px 14px;
+      }
+
+      .style-info strong {
+        font-size: 14px;
+      }
+
+      .style-info p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      @media (max-width: 980px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          max-height: none;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .main {
+          min-height: 780px;
+        }
+
+        .style-board {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 1320px) {
+        .canvas-wrap {
+          width: 540px;
+          height: 720px;
+        }
+
+        .xhs-card {
+          transform: scale(0.5);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <strong>xhs2pic</strong>
+          <span>长文转小红书图文</span>
+        </div>
+        <div class="top-actions">
+          <button class="btn">导出当前页</button>
+          <button class="btn primary">导出全部 PNG</button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar">
+          <section class="section">
+            <div class="section-title">
+              <h2>Content</h2>
+              <span class="chip">自动保存</span>
+            </div>
+            <div class="upload-row" aria-label="import actions">
+              <span class="chip">粘贴文章</span>
+              <span class="chip">上传 .docx</span>
+              <span class="chip">上传 .md/.txt</span>
+              <span class="chip">插入图片</span>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">
+              <h2>Editor</h2>
+              <span class="chip">第 1 张 / 共 6 张</span>
+            </div>
+            <div class="toolbar-row" style="margin-bottom: 10px;">
+              <span class="chip">标题</span>
+              <span class="chip">引用</span>
+              <span class="chip">列表</span>
+              <span class="chip">加粗</span>
+            </div>
+            <textarea class="editor"># 为什么长文需要被重新排版
+
+真正的问题不是内容太长，而是阅读节奏被挤坏了。
+
+把长文转成小红书图片，不是机械切成几段文字，而是重新设计每一页的停顿、重心和呼吸感。
+
+> 一页就是一个阅读单位。读者翻到下一页时，应该自然知道自己为什么继续读。</textarea>
+          </section>
+
+          <section class="section">
+            <div class="section-title">
+              <h2>Images</h2>
+              <span class="chip">1 张</span>
+            </div>
+            <div class="asset-row">
+              <div class="asset-thumb"></div>
+              <div class="asset-meta">
+                <strong>reading-desk.jpg</strong>
+                <span>适配内容宽度 · 带说明文字</span>
+              </div>
+              <span class="chip">删除</span>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">
+              <h2>Template</h2>
+            </div>
+            <div class="template-list">
+              <div class="template-option active">
+                <span class="dot"></span>
+                <div>
+                  <strong>Kami Paper</strong>
+                  <span>纸感、书卷、编辑式留白</span>
+                </div>
+                <span class="swatch" style="background: #f8f0df;"></span>
+              </div>
+              <div class="template-option">
+                <span class="dot"></span>
+                <div>
+                  <strong>Clean Note</strong>
+                  <span>现代、清爽、方法笔记</span>
+                </div>
+                <span class="swatch" style="background: #ffffff;"></span>
+              </div>
+              <div class="template-option">
+                <span class="dot"></span>
+                <div>
+                  <strong>Editorial Black</strong>
+                  <span>黑白杂志、强观点标题</span>
+                </div>
+                <span class="swatch" style="background: #171717;"></span>
+              </div>
+              <div class="template-option">
+                <span class="dot"></span>
+                <div>
+                  <strong>Soft Grid</strong>
+                  <span>网格、教程、框架拆解</span>
+                </div>
+                <span class="swatch" style="background: #f7fbf7;"></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-title">
+              <h2>Typography</h2>
+            </div>
+            <div class="field">
+              <label>中文字体</label>
+              <select class="select">
+                <option>Noto Serif SC</option>
+                <option>Noto Sans SC</option>
+                <option>思源宋体</option>
+                <option>霞鹜文楷</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>英文字体</label>
+              <select class="select">
+                <option>Inter</option>
+                <option>Lora</option>
+                <option>Merriweather</option>
+                <option>IBM Plex Sans</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>字号</label>
+              <input class="range" type="range" min="30" max="52" value="40" />
+            </div>
+            <div class="field">
+              <label>行距</label>
+              <input class="range" type="range" min="1.35" max="2.1" step="0.05" value="1.75" />
+            </div>
+          </section>
+        </aside>
+
+        <main class="main">
+          <div class="previewbar">
+            <strong>1080 x 1440 px Preview</strong>
+            <div class="preview-meta">
+              <span>第 1 张 / 共 6 张</span>
+              <span>范围：0-426 字</span>
+              <span>缩放 50%</span>
+            </div>
+          </div>
+
+          <section class="stage" aria-label="main preview">
+            <div class="canvas-wrap">
+              <article class="xhs-card paper">
+                <div class="kicker">LONGFORM / 01</div>
+                <h1>为什么长文需要<br />被重新排版</h1>
+                <p>真正的问题不是内容太长，而是阅读节奏被挤坏了。</p>
+                <p>把长文转成小红书图片，不是机械切成几段文字，而是重新设计每一页的停顿、重心和呼吸感。</p>
+                <blockquote>一页就是一个阅读单位。读者翻到下一页时，应该自然知道自己为什么继续读。</blockquote>
+                <div class="footer">
+                  <span>xhs2pic</span>
+                  <span>01 / 06</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="thumbs">
+            <div class="thumb">
+              <div class="mini paper-mini"></div>
+              <div>
+                <strong>第 1 张</strong>
+                <span>从标题到“一页就是一个阅读单位。”</span>
+              </div>
+            </div>
+            <div class="thumb">
+              <div class="mini clean-mini"></div>
+              <div>
+                <strong>第 2 张</strong>
+                <span>从“第二件事”到“读者需要呼吸感。”</span>
+              </div>
+            </div>
+            <div class="thumb">
+              <div class="mini black-mini"></div>
+              <div>
+                <strong>第 3 张</strong>
+                <span>包含 1 张图片，说明文字跟随图片。</span>
+              </div>
+            </div>
+            <div class="thumb">
+              <div class="mini grid-mini"></div>
+              <div>
+                <strong>第 4 张</strong>
+                <span>清单段落：拆段、定层级、控密度。</span>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <section class="style-board" aria-label="template concepts">
+      <div class="style-card">
+        <div class="style-preview paper-style">
+          <small>LONGFORM / 01</small>
+          <h3>为什么长文需要被重新排版</h3>
+          <p>纸感背景，衬线标题，正文宽松，适合书摘和思想类内容。</p>
+        </div>
+        <div class="style-info">
+          <strong>Kami Paper</strong>
+          <p>默认模板候选。最接近 kami 的克制纸感和编辑式层级。</p>
+        </div>
+      </div>
+
+      <div class="style-card">
+        <div class="style-preview clean-style">
+          <small># 方法笔记</small>
+          <h3>一页就是一个阅读单位</h3>
+          <p>白底、黑体、少量强调色。适合工具、职场、知识笔记。</p>
+        </div>
+        <div class="style-info">
+          <strong>Clean Note</strong>
+          <p>最通用，信息清晰，适合作为大众默认主题。</p>
+        </div>
+      </div>
+
+      <div class="style-card">
+        <div class="style-preview black-style">
+          <small>ESSAY / 03</small>
+          <h3>重新排版，不是把文字放进图片。</h3>
+          <p>黑白杂志感，标题强，适合观点文和商业分析。</p>
+        </div>
+        <div class="style-info">
+          <strong>Editorial Black</strong>
+          <p>更有态度，但不适合所有用户作为默认。</p>
+        </div>
+      </div>
+
+      <div class="style-card">
+        <div class="style-preview grid-style">
+          <small>03 / FRAME</small>
+          <h3>文章分页逻辑</h3>
+          <p>A. 保留完整段落<br />B. 超长段落按句切分<br />C. 每页独立可读</p>
+        </div>
+        <div class="style-info">
+          <strong>Soft Grid</strong>
+          <p>适合教程、清单、框架拆解。结构感最强。</p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

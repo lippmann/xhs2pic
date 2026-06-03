@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>xhs2pic 主题 v2 mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=LXGW+WenKai&family=EB+Garamond:wght@400;500&family=Lora:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --ui: "EB Garamond", Charter, Georgia, serif;
+        --serif-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", Georgia, serif;
+        --sans-cn: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+        --wenkai: "LXGW WenKai", "Noto Serif SC", "Songti SC", serif;
+        --mono: "EB Garamond", Charter, Georgia, serif;
+
+        /* kami color tokens */
+        --parchment:    #f5f4ed;
+        --ivory:        #faf9f5;
+        --warm-sand:    #e8e6dc;
+        --deep-dark:    #141413;
+        --dark-surface: #30302e;
+        --near-black:   #141413;
+        --dark-warm:    #3d3d3a;
+        --olive:        #504e49;
+        --stone:        #6b6a64;
+        --brand:        #1B365D;
+        --border:       #e8e6dc;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: #2c2b28;
+        color: #e8e4dc;
+        font-family: var(--ui);
+      }
+
+      .page-shell {
+        padding: 40px 36px 60px;
+        max-width: 1480px;
+        margin: 0 auto;
+      }
+
+      .top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 36px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(232,228,220,0.15);
+      }
+
+      .top h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        color: #c8c4bc;
+      }
+
+      .top p {
+        margin: 5px 0 0;
+        color: #706c64;
+        font-size: 13px;
+        letter-spacing: 0.02em;
+      }
+
+      .top-right {
+        text-align: right;
+        color: #706c64;
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 28px;
+        align-items: start;
+      }
+
+      .mock { min-width: 0; }
+
+      .mock-label {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(232,228,220,0.12);
+      }
+
+      .mock-label strong {
+        font-size: 13px;
+        font-weight: 500;
+        color: #d4cfc6;
+        letter-spacing: 0.04em;
+      }
+
+      .mock-label span {
+        color: #6b6760;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .frame {
+        width: 270px;
+        height: 360px;
+        overflow: hidden;
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,0.06),
+          0 24px 60px rgba(0,0,0,0.52),
+          0 8px 20px rgba(0,0,0,0.32);
+      }
+
+      .card {
+        width: 1080px;
+        height: 1440px;
+        transform: scale(0.25);
+        transform-origin: top left;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* ─────────────────────────────────────────
+         THEME 1 · MERIDIAN
+         关键词：纬度感、留白、编辑理性、衬线精要
+         灵感：Monocle / The Economist / 台湾《天下》
+         背景：暖米 #f5f4ed，单强调色 ink-blue
+      ───────────────────────────────────────── */
+
+      .meridian {
+        background: var(--parchment);
+        color: var(--near-black);
+        font-family: var(--serif-cn);
+        padding: 0;
+      }
+
+      .meridian .head-bar {
+        height: 6px;
+        background: var(--brand);
+      }
+
+      .meridian .body {
+        padding: 80px 92px 76px;
+      }
+
+      .meridian .eyebrow {
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 22px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--brand);
+        margin-bottom: 48px;
+      }
+
+      .meridian h2 {
+        margin: 0 0 52px;
+        font-size: 82px;
+        line-height: 1.1;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        color: var(--near-black);
+      }
+
+      .meridian .rule {
+        width: 48px;
+        height: 2px;
+        background: var(--brand);
+        margin: 0 0 44px;
+      }
+
+      .meridian p {
+        margin: 0 0 30px;
+        font-size: 38px;
+        line-height: 1.72;
+        color: var(--dark-warm);
+      }
+
+      .meridian .pull {
+        margin: 52px 0;
+        padding: 42px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        font-size: 46px;
+        line-height: 1.44;
+        color: var(--near-black);
+        font-weight: 500;
+      }
+
+      .meridian .folio {
+        position: absolute;
+        left: 92px;
+        right: 92px;
+        bottom: 66px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 22px;
+        letter-spacing: 0.12em;
+        color: var(--stone);
+      }
+
+      .meridian .folio::before {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 0; right: 0;
+        height: 1px;
+        background: var(--border);
+      }
+
+
+      /* ─────────────────────────────────────────
+         THEME 2 · SULCUS
+         关键词：沟槽、版式张力、左侧纵线、结构感
+         灵感：Wallpaper* / Kinfolk / 日本设计杂志
+         背景：极浅暖灰 #f8f7f2，深墨文字
+      ───────────────────────────────────────── */
+
+      .sulcus {
+        background: #f8f7f2;
+        color: var(--near-black);
+        font-family: var(--sans-cn);
+      }
+
+      .sulcus .spine {
+        position: absolute;
+        left: 72px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: var(--near-black);
+        opacity: 0.15;
+      }
+
+      .sulcus .body {
+        padding: 90px 88px 76px 116px;
+      }
+
+      .sulcus .issue {
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 20px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--stone);
+        margin-bottom: 40px;
+      }
+
+      .sulcus h2 {
+        margin: 0 0 18px;
+        font-size: 80px;
+        line-height: 1.06;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--near-black);
+      }
+
+      .sulcus .sub {
+        margin: 0 0 52px;
+        font-size: 32px;
+        line-height: 1.5;
+        color: var(--olive);
+        font-weight: 400;
+        padding-bottom: 38px;
+        border-bottom: 1px solid #dddbd4;
+      }
+
+      .sulcus p {
+        margin: 0 0 26px;
+        font-size: 36px;
+        line-height: 1.7;
+        color: var(--dark-warm);
+      }
+
+      .sulcus .annotation {
+        margin-top: 44px;
+        padding: 0 0 0 36px;
+        border-left: 3px solid var(--near-black);
+        font-size: 36px;
+        line-height: 1.58;
+        color: var(--near-black);
+        font-weight: 500;
+      }
+
+      .sulcus .folio {
+        position: absolute;
+        left: 116px;
+        right: 88px;
+        bottom: 66px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 22px;
+        letter-spacing: 0.1em;
+        color: var(--stone);
+      }
+
+
+      /* ─────────────────────────────────────────
+         THEME 3 · NUIT
+         关键词：夜、克制的奢华、字重对比、深底亮文
+         灵感：032c / System / i-D 黑白版
+         背景：深橄榄黑 #141413，象牙文字
+      ───────────────────────────────────────── */
+
+      .nuit {
+        background: var(--deep-dark);
+        color: #e8e4d8;
+        font-family: var(--serif-cn);
+      }
+
+      .nuit .body {
+        padding: 88px 90px 76px;
+      }
+
+      .nuit .vol {
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 20px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: #6b6a5e;
+        margin-bottom: 52px;
+      }
+
+      .nuit h2 {
+        margin: 0 0 56px;
+        font-size: 90px;
+        line-height: 1.0;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: #f0ece2;
+      }
+
+      .nuit p {
+        margin: 0 0 28px;
+        font-size: 37px;
+        line-height: 1.74;
+        color: #b4b0a6;
+      }
+
+      .nuit .tension {
+        margin: 52px 0;
+        padding: 44px 0;
+        border-top: 1px solid #2e2e2b;
+        border-bottom: 1px solid #2e2e2b;
+        font-size: 50px;
+        line-height: 1.32;
+        color: #f0ece2;
+        font-weight: 500;
+      }
+
+      .nuit .tag-row {
+        display: flex;
+        gap: 16px;
+        margin-top: 38px;
+      }
+
+      .nuit .tag {
+        padding: 14px 26px;
+        border: 1px solid #333330;
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 22px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #6b6a5e;
+      }
+
+      .nuit .folio {
+        position: absolute;
+        left: 90px;
+        right: 90px;
+        bottom: 66px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "EB Garamond", Charter, Georgia, serif;
+        font-size: 22px;
+        letter-spacing: 0.14em;
+        color: #3e3e3b;
+      }
+
+
+      /* ─────────────────────────────────────────
+         THEME 4 · WENKAI
+         关键词：手书感、文学温度、散文节奏、东方气韵
+         灵感：《读库》《单读》装帧 / 台湾文学杂志
+         背景：极淡杏 #f9f6ef，霞鹜文楷
+      ───────────────────────────────────────── */
+
+      .wenkai-card {
+        background: #f9f6ef;
+        color: #1e1c18;
+        font-family: var(--wenkai);
+      }
+
+      .wenkai-card .body {
+        padding: 86px 96px 76px;
+      }
+
+      .wenkai-card .chapter {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-bottom: 50px;
+      }
+
+      .wenkai-card .chap-num {
+        font-family: "Lora", "EB Garamond", Georgia, serif;
+        font-size: 64px;
+        font-weight: 400;
+        line-height: 1;
+        color: #c8b99a;
+      }
+
+      .wenkai-card .chap-line {
+        flex: 1;
+        height: 1px;
+        background: #d4cbb8;
+      }
+
+      .wenkai-card .chap-label {
+        font-size: 22px;
+        letter-spacing: 0.24em;
+        color: #9e9484;
+      }
+
+      .wenkai-card h2 {
+        margin: 0 0 48px;
+        font-size: 76px;
+        line-height: 1.18;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: #1e1c18;
+      }
+
+      .wenkai-card p {
+        margin: 0 0 30px;
+        font-size: 38px;
+        line-height: 1.84;
+        color: #3d3a32;
+        letter-spacing: 0.04em;
+      }
+
+      .wenkai-card .verse {
+        margin: 46px 0;
+        padding: 36px 44px;
+        background: #f1ece2;
+        border-left: 3px solid #c8b99a;
+        font-size: 38px;
+        line-height: 1.76;
+        color: #2c2a24;
+        letter-spacing: 0.04em;
+      }
+
+      .wenkai-card .folio {
+        position: absolute;
+        left: 96px;
+        right: 96px;
+        bottom: 66px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: "Lora", "EB Garamond", Georgia, serif;
+        font-size: 22px;
+        letter-spacing: 0.1em;
+        color: #9e9484;
+      }
+
+      .wenkai-card .folio::before {
+        content: '';
+        position: absolute;
+        top: -18px;
+        left: 0; right: 0;
+        height: 1px;
+        background: #d4cbb8;
+      }
+
+
+      /* ── viewport scaling ── */
+
+      @media (min-width: 1500px) {
+        .frame { width: 324px; height: 432px; }
+        .card  { transform: scale(0.3); }
+      }
+
+      @media (max-width: 1280px) {
+        .grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @media (max-width: 680px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="top">
+        <div>
+          <h1>xhs2pic · 主题方向 v2</h1>
+          <p>文章：AI时代，创业路径会发生哪些变化？ · 每张画布基准 1080×1440 px</p>
+        </div>
+        <div class="top-right">四套主题 · 第 1 张预览</div>
+      </header>
+
+      <section class="grid">
+
+        <!-- MERIDIAN -->
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Meridian</strong>
+            <span>编辑 · 长文</span>
+          </div>
+          <div class="frame">
+            <article class="card meridian">
+              <div class="head-bar"></div>
+              <div class="body">
+                <div class="eyebrow">AI &amp; Startup · 01</div>
+                <h2>AI时代，创业路径会发生哪些变化？</h2>
+                <div class="rule"></div>
+                <p>Claude 发布了一份给创业者的手册。底层逻辑很清楚：AI 让原本只有大公司才能做的事，变成了一个人或小团队可以尝试的事。</p>
+                <div class="pull">创业的门槛在降低，但真正的稀缺从来不是执行力——是判断力。</div>
+                <div class="folio">
+                  <span>xhs2pic</span>
+                  <span>01 · 06</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- SULCUS -->
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Sulcus</strong>
+            <span>观点 · 笔记</span>
+          </div>
+          <div class="frame">
+            <article class="card sulcus">
+              <div class="spine"></div>
+              <div class="body">
+                <div class="issue">Essay / No.01</div>
+                <h2>创业链条被AI压缩了</h2>
+                <p class="sub">但判断力的稀缺性从来没变过</p>
+                <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业运营。</p>
+                <p>差异化正在转向一个更尖锐的问题：你有没有真正好的想法。</p>
+                <div class="annotation">一个人的创业公司，不是人手不够，而是一种全新的组织形态。</div>
+                <div class="folio">
+                  <span>xhs2pic</span>
+                  <span>01 / 06</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- NUIT -->
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Nuit</strong>
+            <span>深底 · 锐评</span>
+          </div>
+          <div class="frame">
+            <article class="card nuit">
+              <div class="body">
+                <div class="vol">Longform · 01</div>
+                <h2>未来最强的创始人，不一定最会写代码。</h2>
+                <p>Anthropic 发布的这份创业手册当然是广告。但厉害的广告，其实是在下注——下注一种它希望成真的未来。</p>
+                <div class="tension">当创业门槛越来越低，问题只剩一个：你能造出什么？</div>
+                <div class="tag-row">
+                  <div class="tag">AI Native</div>
+                  <div class="tag">Founder</div>
+                </div>
+                <div class="folio">
+                  <span>xhs2pic</span>
+                  <span>01 · 06</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- WENKAI -->
+        <div class="mock">
+          <div class="mock-label">
+            <strong>Wenkai</strong>
+            <span>文学 · 书摘</span>
+          </div>
+          <div class="frame">
+            <article class="card wenkai-card">
+              <div class="body">
+                <div class="chapter">
+                  <div class="chap-num">01</div>
+                  <div class="chap-line"></div>
+                  <div class="chap-label">AI 与创业</div>
+                </div>
+                <h2>AI时代，创业路径会发生哪些变化？</h2>
+                <p>Claude 官方博客发布了一份给创业者的 AI 原生应用手册，底层诉求是让更多创业者选择 Claude。</p>
+                <p>但它真正有意思的地方，是把 AI 对创业范式的改变讲得很清楚。</p>
+                <div class="verse">AI 让"10 人独角兽公司"变成一种可以被设计的组织形态——这一点，比任何效率工具都更根本。</div>
+                <div class="folio">
+                  <span>xhs2pic</span>
+                  <span>01 · 06</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>xhs2pic · 完整文章渲染 · Meridian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --serif-cn: "Noto Serif SC","Source Han Serif SC","Songti SC","STSong",Georgia,serif;
+      --en:       "EB Garamond",Charter,Georgia,serif;
+      --parchment: #f5f4ed;
+      --near-black:#141413;
+      --dark-warm: #3d3d3a;
+      --olive:     #504e49;
+      --stone:     #6b6a64;
+      --brand:     #1B365D;
+      --border:    #dddbd2;
+
+      --W: 1080px;
+      --H: 1440px;
+      --PAD-X: 80px;   /* 左右边距 */
+      --PAD-Y: 80px;   /* 上下边距（每张图顶部和底部都是这个值） */
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    /* ── 外层展示壳 ── */
+    body {
+      background: #1e1d1b;
+      font-family: var(--serif-cn);
+      padding: 48px 40px 80px;
+    }
+
+    .shell-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 32px; padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-family: var(--en);
+    }
+    .shell-header h1 { font-size:15px; font-weight:400; letter-spacing:.04em; color:#888; }
+    .shell-header p  { font-size:12px; color:#444; margin-top:4px; }
+    .shell-header .note { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#3a3836; }
+
+    /* 缩放容器，把 1080px 宽的内容缩到可视区 */
+    .scale-wrap {
+      transform-origin: top left;
+      transform: scale(0.6);
+      width: 1080px;           /* 实际宽度 */
+      /* 缩放后占用高度由内容决定 */
+    }
+    /* 给外层一个与缩放后高度匹配的容器，避免遮挡 */
+    .scale-outer {
+      width: calc(1080px * 0.6); /* = 648px */
+      overflow: visible;
+      margin: 0 auto;
+    }
+
+    /* ── 文章主容器：1080px 宽，连续流 ── */
+    .article-wrap {
+      width: var(--W);
+      background: var(--parchment);
+      position: relative;
+    }
+
+    /* 顶部 ink-blue 横条 */
+    .top-bar {
+      width: 100%; height: 7px;
+      background: var(--brand);
+    }
+
+    /* ── 封面页 ── */
+    .cover {
+      width: var(--W);
+      height: var(--H);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* 题图：上半部分 */
+    .cover-image {
+      width: 100%;
+      height: 680px;
+      overflow: hidden;
+      position: relative;
+    }
+    .cover-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* 封面信息区：下半部分 */
+    .cover-info {
+      padding: 64px var(--PAD-X) 0;
+    }
+    .cover-kicker {
+      font-family: var(--en);
+      font-size: 22px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--brand); margin-bottom: 36px;
+    }
+    .cover-title {
+      font-size: 72px; font-weight: 700; line-height: 1.12;
+      letter-spacing: -.01em; color: var(--near-black);
+      margin-bottom: 28px;
+    }
+    .cover-lead {
+      font-size: 34px; line-height: 1.72;
+      color: var(--dark-warm); margin-bottom: 48px;
+    }
+    .cover-author {
+      display: flex; align-items: center; gap: 22px;
+    }
+    .cover-author .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      overflow: hidden; flex-shrink: 0;
+      border: 2px solid rgba(27,54,93,.15);
+    }
+    .cover-author .avatar img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .cover-author .name {
+      font-size: 30px; color: var(--near-black); font-weight: 500;
+    }
+    .cover-author .id {
+      font-family: var(--en); font-size: 22px;
+      letter-spacing: .08em; color: var(--stone); margin-top: 6px;
+    }
+
+    /* 封面页脚 */
+    .cover-folio {
+      position: absolute;
+      left: var(--PAD-X); right: var(--PAD-X); bottom: 58px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--en); font-size: 22px;
+      letter-spacing: .1em; color: var(--stone);
+      border-top: 1px solid var(--border); padding-top: 18px;
+    }
+
+    /* ── 正文区：连续流 ── */
+    .body-flow {
+      padding: var(--PAD-Y) var(--PAD-X);
+      /* 注意：这个 padding 保证了每张截图的上下边缘都有相同留白 */
+      /* 截图时按 1440px 切割，padding 是容器本身的，自然出现在每张图的上下 */
+    }
+
+    /* 正文内容块 */
+    .body-flow h2 {
+      font-size: 42px; font-weight: 700; line-height: 1.3;
+      color: var(--near-black);
+      margin: 56px 0 24px;
+      padding-top: 4px;
+    }
+    .body-flow h2:first-child { margin-top: 0; }
+
+    .body-flow .section-num {
+      font-family: var(--en);
+      font-size: 22px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--brand); margin-bottom: 14px; display: block;
+    }
+
+    .body-flow h3 {
+      font-size: 36px; font-weight: 700; line-height: 1.4;
+      color: var(--near-black); margin: 44px 0 16px;
+    }
+
+    .body-flow p {
+      font-size: 34px; line-height: 1.84;
+      color: var(--dark-warm); margin-bottom: 30px;
+    }
+
+    .body-flow .quote {
+      margin: 40px 0;
+      padding: 36px 44px;
+      border-left: 5px solid var(--brand);
+      background: #EEF2F7;
+      font-size: 36px; line-height: 1.68; color: var(--near-black);
+    }
+
+    .body-flow .divider {
+      height: 1px; background: var(--border);
+      margin: 48px 0;
+    }
+
+    .body-flow .highlight {
+      font-size: 38px; font-weight: 500; line-height: 1.6;
+      color: var(--near-black); margin: 40px 0;
+      padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+
+    /* ── 截图分割线（仅 mockup 展示用，导出时不显示） ── */
+    /* 封面页的分割已由 cover height 固定，后续按正文区切割 */
+    .cut-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 0;
+      border-top: 2px dashed rgba(255, 80, 80, 0.55);
+      pointer-events: none;
+      z-index: 100;
+    }
+    .cut-label {
+      position: absolute;
+      right: 12px; top: -22px;
+      font-family: var(--en); font-size: 18px;
+      color: rgba(255, 80, 80, 0.7);
+      letter-spacing: .1em; text-transform: uppercase;
+      background: var(--parchment); padding: 0 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:700px; margin:0 auto;">
+  <div class="shell-header">
+    <div>
+      <h1>xhs2pic · 完整文章渲染 · Meridian</h1>
+      <p>连续文章容器，红色虚线 = 1080×1440px 截图切割位置</p>
+    </div>
+    <div class="note">作者：科技圈小S</div>
+  </div>
+
+  <div class="scale-outer">
+    <div class="scale-wrap">
+
+      <div class="article-wrap" id="article">
+        <div class="top-bar"></div>
+
+        <!-- ══ 封面页 ══ -->
+        <div class="cover">
+
+          <!-- 题图上半 -->
+          <div class="cover-image">
+            <img src="avatar.jpg" alt="题图" />
+          </div>
+
+          <!-- 信息下半 -->
+          <div class="cover-info">
+            <div class="cover-kicker">AI &amp; Startup · 2026</div>
+            <div class="cover-title">AI时代，创业路径会发生哪些变化？</div>
+            <p class="cover-lead">Claude 官方博客发布了一份给创业者的 AI 原生应用创业手册——AI 对整个创业范式的全面改变。</p>
+            <div class="cover-author">
+              <div class="avatar"><img src="avatar.jpg" alt="科技圈小S" /></div>
+              <div>
+                <div class="name">科技圈小S</div>
+                <div class="id">@kejiquan_xs</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cover-folio">
+            <span>科技圈小S</span>
+            <span>01</span>
+          </div>
+        </div>
+
+        <!-- ══ 正文流 ══ -->
+        <div class="body-flow" id="body-flow">
+
+          <span class="section-num">一 · 创业生命周期</span>
+          <h2>创业链条被AI压缩了</h2>
+
+          <p>不懂技术的人能跑出软件产品，只懂技术的人也能做商业化运营——这是当下的现状。创业链条上具体的事情没有变，但这条链路被 AI 压缩了，真正的差异化已经转向了「有没有好点子」。</p>
+
+          <p>以前衡量一个创业团队，问的是「你们能不能把这件事做出来」。现在这个问题的答案越来越接近「能」——AI 把这个门槛几乎抹平了。所以真正的问题变成了：你做的这件事，值不值得做？</p>
+
+          <div class="quote">执行力从壁垒变成了门票。真正的稀缺，是在开始之前就判断对的能力。当门槛被放低之后，你能造出什么？</div>
+
+          <p>这也意味着创业的失败点在前移。不是死在产品做不出来，而是死在做出来了却发现没人要。AI 原生时代，验证比构建更重要。</p>
+
+          <div class="divider"></div>
+
+          <span class="section-num">二 · 创始人角色</span>
+          <h2>现在搭建的是AI军团</h2>
+
+          <p>创始人仍然需要搭建团队，但现在搭建的是 AI 军团了。市场研究、写文档、写代码、产品设计、运营流程——这条链路上大多数事情，都可以交给 AI Agent 去做。创始人从「亲自干活＋管人」，变成「指挥 AI 干活」的系统设计者。判断什么该做、什么不该做，比知道怎么做更重要。AI 是执行层，人是方向层——这个分工越来越清晰。</p>
+
+          <div class="highlight">管理者不再管人，而是管系统。你是 AI 军团的架构师，不是流水线上的工人。</div>
+
+          <div class="divider"></div>
+
+          <span class="section-num">三 · AI原生创业路径</span>
+          <h2>Anthropic 拆解的四个阶段</h2>
+
+          <p>Anthropic 在手册里把 AI 原生创业路径拆成了四个阶段，每个阶段 AI 扮演的角色不同，创始人的重心也不同。</p>
+
+          <h3>1、Idea Stage（想法验证）——AI做研究院</h3>
+          <p>很多AI创业死法是一天做出 demo、一周觉得自己 PMF、一个月后发现没人留存，所以建议在开始的时候不要着急build。问问Claude这几个问题："为什么它会失败？""用户为什么不会买？""竞争对手为什么会赢？"，不要问"这个 idea 好不好？"通过这些问题判定，这个idea是不是真的值得做。</p>
+
+          <h3>2、MVP Stage（最小产品）——AI做产品+工程师</h3>
+          <p>这个阶段核心要求是，必须关注上下文，管理好CLAUDE.md文件，避免AI在coding的时候从零开始。做出MVP之后，用肖恩·埃利斯（增长黑客的作者）测试，询问活跃用户："如果您无法再使用此产品，您会作何感想？"如果超过 40% 的用户回答"非常失望"，这就是一个有意义的产品市场契合度 (PMF) 指标，来判断用户会不会持续使用你的产品。</p>
+
+          <h3>3、Launch Stage（启动增长）——AI做运营</h3>
+          <p>要求创始人从builder身份转向系统设计者，判断规模化可能，同时解决MVP阶段大概率会存在的dirty code。</p>
+
+          <h3>4、Scale Stage（规模化）——AI管公司（？这里打个问号）</h3>
+          <p>其实这个阶段貌似AI能完成的就有限了，虽然Anthropic说AI能够帮你管理公司，但显然复杂程度远远超过做一个MVP吧。</p>
+
+          <div class="divider"></div>
+
+          <span class="section-num">结 · Closing</span>
+          <h2>这是广告，也是一种下注</h2>
+
+          <p>这篇博客当然是 Anthropic 的广告。但所有厉害的广告，本质都在下注未来——它不是在描述现在，而是在塑造一种它希望成真的叙事。</p>
+
+          <p>Anthropic 赌的是：未来最强的创始人，不一定是最会写代码的人。当 AI 把执行力变成标配，稀缺的是判断力——判断什么值得做，以及为什么现在是做它的时候。</p>
+
+          <div class="quote">当门槛被放低之后，你能造出什么？这个问题，过去是留给少数人的。现在它留给了所有人。</div>
+
+          <p>创业生命周期被重置，创始人角色被重新定义。AI 原生创业的核心，不是用 AI 提效，而是重新思考一家公司该是什么样子的。十个人，能不能做出一家独角兽？Anthropic 的答案是：可以，而且这已经在发生了。</p>
+
+        </div><!-- /body-flow -->
+
+      </div><!-- /article-wrap -->
+
+    </div><!-- /scale-wrap -->
+  </div><!-- /scale-outer -->
+</div>
+
+<script>
+  // 在渲染完成后，自动计算并绘制截图切割线
+  window.addEventListener('load', function() {
+    const article = document.getElementById('article');
+    const bodyFlow = document.getElementById('body-flow');
+    const W = 1080, H = 1440;
+    const scale = 0.6;
+
+    // 封面页已占满第1张（height: 1440px），从第2张开始是正文
+    // 正文容器相对于 article 的 offsetTop
+    const bodyTop = bodyFlow.offsetTop; // = 7(topbar) + 1440(cover) = 1447px
+
+    // 正文区总高度
+    const bodyHeight = bodyFlow.offsetHeight;
+
+    // 第2张开始，每 H px 画一条切割线
+    // 第2张：从 y=1440 到 y=2880，正文区偏移 = 1440 - bodyTop = 1440 - 1447 ≈ -7（即正文从第2张第1px开始）
+    // 切割线位置（相对于 article 顶部）：1440, 2880, 4320...
+    const articleHeight = article.offsetHeight;
+    const cuts = [];
+    for (let y = H; y < articleHeight; y += H) {
+      cuts.push(y);
+    }
+
+    cuts.forEach((y, i) => {
+      const line = document.createElement('div');
+      line.className = 'cut-line';
+      line.style.top = y + 'px';
+
+      const label = document.createElement('div');
+      label.className = 'cut-label';
+      label.textContent = `cut ${i + 2}`;
+      line.appendChild(label);
+
+      article.style.position = 'relative';
+      article.appendChild(line);
+    });
+
+    // 调整 scale-outer 高度匹配缩放后内容
+    const scaleOuter = document.querySelector('.scale-outer');
+    scaleOuter.style.height = (articleHeight * scale) + 'px';
+  });
+</script>
+</body>
+</html>
