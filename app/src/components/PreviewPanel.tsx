@@ -81,7 +81,7 @@ export function PreviewPanel({ pages }: Props) {
 
   if (pages.length === 0) {
     return (
-      <div className="h-full flex items-center justify-center text-gray-300 text-sm">
+      <div className="flex-1 flex items-center justify-center text-gray-300 text-sm">
         在左侧粘贴或上传文章内容
       </div>
     )
