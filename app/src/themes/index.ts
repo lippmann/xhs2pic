@@ -150,7 +150,7 @@ export const themes: Record<string, TemplateTheme> = {
 
   mint: {
     id: 'mint',
-    name: 'Mint',
+    name: '绿绦',
     background: '#f2f7f7',
     cnFont: '"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif',
     enFont: '"EB Garamond",Charter,Georgia,serif',
