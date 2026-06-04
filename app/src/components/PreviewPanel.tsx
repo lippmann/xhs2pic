@@ -147,8 +147,6 @@ export function PreviewPanel({ pages }: Props) {
         </div>
       )}
 
-      </div>
-
       {/* Off-screen real-size canvases for export */}
       <div style={{ position: 'fixed', top: -9999, left: -9999, pointerEvents: 'none', zIndex: -1 }}>
         {pages.map((page) => (
