@@ -70,6 +70,7 @@ export function PreviewPanel({ pages }: Props) {
       </div>
     )
   }
+  const THUMB_SCALE = 0.09
   const THUMB_W = Math.round(CANVAS_W * THUMB_SCALE)
   const THUMB_H = Math.round(CANVAS_H * THUMB_SCALE)
 
