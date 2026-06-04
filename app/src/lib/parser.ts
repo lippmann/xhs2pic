@@ -54,9 +54,17 @@ export function parseMarkdown(md: string): Block[] {
 
     // ordered list — `1.` or `1. ` or `1、`
     if (/^\d+[.、。]\s*/.test(first)) {
-      const items = lines
-        .filter(l => /^\d+[.、。]\s*/.test(l))
-        .map(l => l.replace(/^\d+[.、。]\s*/, '').trim())
+      const items: string[] = []
+      let current: string[] = []
+      for (const line of lines) {
+        if (/^\d+[.、。]\s*/.test(line)) {
+          if (current.length > 0) items.push(current.join('').trim())
+          current = [line.replace(/^\d+[.、。]\s*/, '').trim()]
+        } else {
+          current.push(line)
+        }
+      }
+      if (current.length > 0) items.push(current.join('').trim())
       blocks.push({ type: 'list', items, ordered: true })
       continue
     }
