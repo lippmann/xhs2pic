@@ -3,7 +3,7 @@ export type Block =
   | { type: 'subtitle';  text: string }
   | { type: 'paragraph'; text: string }
   | { type: 'quote';     text: string }
-  | { type: 'list';      items: string[]; ordered: boolean }
+  | { type: 'list';      items: string[]; ordered: boolean; startIndex?: number }
   | { type: 'image';     src: string; caption?: string }
   | { type: 'divider' }
 
