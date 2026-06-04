@@ -140,13 +140,13 @@ export function PreviewPanel({ pages }: Props) {
           <>
             <div className="flex flex-col gap-2 overflow-y-auto flex-1 pr-1">
               {pages.map((page, i) => (
-                <button
+                <div
                   key={i}
                   onClick={() => setSelectedIdx(i)}
-                  className={`flex-shrink-0 rounded transition border-2 ${
+                  className={`flex-shrink-0 rounded cursor-pointer transition border-2 ${
                     i === selectedIdx ? 'border-gray-800' : 'border-transparent opacity-50 hover:opacity-80'
                   }`}
-                  style={{ width: THUMB_W, height: THUMB_H, position: 'relative', overflow: 'hidden', display: 'block' }}
+                  style={{ width: THUMB_W, height: THUMB_H, position: 'relative', overflow: 'hidden' }}
                 >
                   <div style={{
                     position: 'absolute',
@@ -160,7 +160,7 @@ export function PreviewPanel({ pages }: Props) {
                   }}>
                     <PageCanvas page={page} theme={theme} author={author} showAuthor={showAuthor} coverEnabled={coverEnabled} coverImage={coverImage} />
                   </div>
-                </button>
+                </div>
               ))}
             </div>
             <div className="text-xs text-gray-400 text-center flex-shrink-0">共 {pages.length} 张</div>
