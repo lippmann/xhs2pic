@@ -101,50 +101,50 @@ export function PreviewPanel({ pages }: Props) {
           </div>
         </div>
 
-      {/* Vertical thumbnail strip + buttons + page count */}
-      {pages.length > 1 && (
-        <div className="flex flex-col gap-2 flex-shrink-0" style={{ width: THUMB_W + 8 }}>
-          {/* Download buttons above thumbnails */}
-          <button
-            onClick={() => handleExportPage(selectedPage.index)}
-            disabled={exporting}
-            className="w-full text-xs px-3 py-1.5 bg-white hover:bg-gray-50 rounded-lg shadow-sm border border-gray-100 text-gray-600 transition disabled:opacity-50"
-          >
-            下载此页
-          </button>
-          <button
-            onClick={handleExportAll}
-            disabled={exporting}
-            className="w-full text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition disabled:opacity-50"
-          >
-            {exporting ? '导出中…' : '下载全部'}
-          </button>
-          {/* Thumbnails */}
-          <div className="flex flex-col gap-2 overflow-y-auto flex-1 pr-1">
-            {pages.map((page, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedIdx(i)}
-                className={`flex-shrink-0 rounded overflow-hidden transition border-2 ${
-                  i === selectedIdx ? 'border-gray-800' : 'border-transparent opacity-50 hover:opacity-80'
-                }`}
-                style={{ width: THUMB_W, height: THUMB_H }}
-              >
-                <div style={{
-                  transformOrigin: 'top left',
-                  transform: `scale(${THUMB_SCALE})`,
-                  width: CANVAS_W,
-                  height: CANVAS_H,
-                  pointerEvents: 'none',
-                }}>
-                  <PageCanvas page={page} theme={theme} author={author} showAuthor={showAuthor} coverEnabled={coverEnabled} coverImage={coverImage} />
-                </div>
-              </button>
-            ))}
-          </div>
-          <div className="text-xs text-gray-400 text-center flex-shrink-0">共 {pages.length} 张</div>
-        </div>
-      )}
+      {/* Right sidebar: buttons + optional thumbnails + count */}
+      <div className="flex flex-col gap-2 flex-shrink-0" style={{ width: THUMB_W + 8 }}>
+        <button
+          onClick={() => handleExportPage(selectedPage.index)}
+          disabled={exporting}
+          className="w-full text-xs px-3 py-1.5 bg-white hover:bg-gray-50 rounded-lg shadow-sm border border-gray-100 text-gray-600 transition disabled:opacity-50"
+        >
+          下载此页
+        </button>
+        <button
+          onClick={handleExportAll}
+          disabled={exporting}
+          className="w-full text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition disabled:opacity-50"
+        >
+          {exporting ? '导出中…' : '下载全部'}
+        </button>
+        {pages.length > 1 && (
+          <>
+            <div className="flex flex-col gap-2 overflow-y-auto flex-1 pr-1">
+              {pages.map((page, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedIdx(i)}
+                  className={`flex-shrink-0 rounded overflow-hidden transition border-2 ${
+                    i === selectedIdx ? 'border-gray-800' : 'border-transparent opacity-50 hover:opacity-80'
+                  }`}
+                  style={{ width: THUMB_W, height: THUMB_H }}
+                >
+                  <div style={{
+                    transformOrigin: 'top left',
+                    transform: `scale(${THUMB_SCALE})`,
+                    width: CANVAS_W,
+                    height: CANVAS_H,
+                    pointerEvents: 'none',
+                  }}>
+                    <PageCanvas page={page} theme={theme} author={author} showAuthor={showAuthor} coverEnabled={coverEnabled} coverImage={coverImage} />
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="text-xs text-gray-400 text-center flex-shrink-0">共 {pages.length} 张</div>
+          </>
+        )}
+      </div>
 
       {/* Off-screen real-size canvases for export */}
       <div style={{ position: 'fixed', top: -9999, left: -9999, pointerEvents: 'none', zIndex: -1 }}>
