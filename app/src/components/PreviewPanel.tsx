@@ -25,7 +25,7 @@ export function PreviewPanel({ pages }: Props) {
     const obs = new ResizeObserver(() => {
       const { clientWidth: w, clientHeight: h } = el
       if (w > 0 && h > 0) {
-        setDynScale(Math.min(h / CANVAS_H, w / CANVAS_W))
+        setDynScale(Math.min((h - 8) / CANVAS_H, w / CANVAS_W))
       }
     })
     obs.observe(el)
