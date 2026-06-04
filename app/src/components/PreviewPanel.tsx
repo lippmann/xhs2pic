@@ -79,8 +79,7 @@ export function PreviewPanel({ pages }: Props) {
     <div className="flex flex-col h-full gap-3">
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between flex-shrink-0">
-        <span className="text-sm text-gray-500">共 {pages.length} 张</span>
+      <div className="flex justify-end flex-shrink-0">
         <button
           onClick={handleExportAll}
           disabled={exporting}
@@ -93,9 +92,9 @@ export function PreviewPanel({ pages }: Props) {
       {/* Body: main preview + thumbnail strip */}
       <div className="flex flex-1 min-h-0 gap-3">
 
-        {/* Main preview */}
+        {/* Main preview — top-aligned to match other panels */}
         {selectedPage && (
-          <div className="flex-1 flex flex-col items-center justify-center min-w-0 gap-2">
+          <div className="flex-1 flex flex-col items-center justify-start min-w-0 gap-2">
             <div style={{ position: 'relative', flexShrink: 0 }}>
               <div style={{
                 width: CANVAS_W * PREVIEW_SCALE,
@@ -126,32 +125,32 @@ export function PreviewPanel({ pages }: Props) {
           </div>
         )}
 
-        {/* Vertical thumbnail strip */}
+        {/* Vertical thumbnail strip + page count */}
         {pages.length > 1 && (
-          <div
-            className="flex flex-col gap-2 overflow-y-auto flex-shrink-0 pr-1"
-            style={{ width: THUMB_W + 8 }}
-          >
-            {pages.map((page, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedIdx(i)}
-                className={`flex-shrink-0 rounded overflow-hidden transition border-2 ${
-                  i === selectedIdx ? 'border-gray-800' : 'border-transparent opacity-50 hover:opacity-80'
-                }`}
-                style={{ width: THUMB_W, height: THUMB_H }}
-              >
-                <div style={{
-                  transformOrigin: 'top left',
-                  transform: `scale(${THUMB_SCALE})`,
-                  width: CANVAS_W,
-                  height: CANVAS_H,
-                  pointerEvents: 'none',
-                }}>
-                  <PageCanvas page={page} theme={theme} author={author} showAuthor={showAuthor} coverEnabled={coverEnabled} coverImage={coverImage} />
-                </div>
-              </button>
-            ))}
+          <div className="flex flex-col gap-2 flex-shrink-0" style={{ width: THUMB_W + 8 }}>
+            <div className="flex flex-col gap-2 overflow-y-auto flex-1 pr-1">
+              {pages.map((page, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedIdx(i)}
+                  className={`flex-shrink-0 rounded overflow-hidden transition border-2 ${
+                    i === selectedIdx ? 'border-gray-800' : 'border-transparent opacity-50 hover:opacity-80'
+                  }`}
+                  style={{ width: THUMB_W, height: THUMB_H }}
+                >
+                  <div style={{
+                    transformOrigin: 'top left',
+                    transform: `scale(${THUMB_SCALE})`,
+                    width: CANVAS_W,
+                    height: CANVAS_H,
+                    pointerEvents: 'none',
+                  }}>
+                    <PageCanvas page={page} theme={theme} author={author} showAuthor={showAuthor} coverEnabled={coverEnabled} coverImage={coverImage} />
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="text-xs text-gray-400 text-center flex-shrink-0">共 {pages.length} 张</div>
           </div>
         )}
 
