@@ -45,17 +45,17 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden gap-4 p-4">
 
         {/* 内容 */}
-        <div className="w-[460px] flex-shrink-0 flex flex-col min-h-0">
+        <div className="w-[500px] flex-shrink-0 flex flex-col min-h-0">
           <EditorPanel />
         </div>
 
         {/* 样式 */}
-        <div className="w-[260px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
+        <div className="w-[220px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
           <StylePanel />
         </div>
 
         {/* 预览 */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 min-h-0 overflow-hidden">
           <PreviewPanel pages={pages} />
         </div>
 
