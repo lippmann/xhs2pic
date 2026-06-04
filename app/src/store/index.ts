@@ -82,7 +82,7 @@ export const useStore = create<Store>()(
       },
 
       author: { name: '', avatar: null },
-      showAuthor: false,
+      showAuthor: true,
       setAuthor: (partial) =>
         set(s => ({ author: { ...s.author, ...partial } })),
       setShowAuthor: (showAuthor) => set({ showAuthor }),
