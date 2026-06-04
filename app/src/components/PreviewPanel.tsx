@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toPng } from 'html-to-image'
 import JSZip from 'jszip'
 import { useStore } from '../store'
