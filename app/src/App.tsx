@@ -9,21 +9,30 @@ import './index.css'
 
 export default function App() {
   const [pages, setPages] = useState<Page[]>([])
-  const { rawText, getTheme, setBlocks, coverEnabled, coverImage } = useStore()
+  const { rawText, blocks, themeId, styleOverrides, getTheme, setBlocks, coverEnabled, coverImage } = useStore()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Effect 1: parse text → blocks (debounced, only when rawText changes)
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => {
-      if (!rawText.trim()) { setPages([]); return }
-      const theme = getTheme()
-      const blocks = parseMarkdown(rawText)
-      setBlocks(blocks)
-      const coverH = coverEnabled && coverImage ? theme.cover.imageHeight : 0
-      setPages(paginate(blocks, theme, coverH))
+      if (!rawText.trim()) { setBlocks([]); return }
+      // Don't re-parse docx placeholder — docx blocks are set directly by EditorPanel
+      if (!rawText.startsWith('(docx:')) {
+        setBlocks(parseMarkdown(rawText))
+      }
     }, 500)
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
-  }, [rawText, getTheme, setBlocks, coverEnabled, coverImage])
+  }, [rawText, setBlocks])
+
+  // Effect 2: paginate (immediate, reacts to blocks / theme / cover changes)
+  useEffect(() => {
+    if (blocks.length === 0) { setPages([]); return }
+    const theme = getTheme()
+    const coverH = coverEnabled && coverImage ? theme.cover.imageHeight : 0
+    setPages(paginate(blocks, theme, coverH))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blocks, themeId, styleOverrides, coverEnabled, coverImage])
 
   return (
     <div className="flex flex-col h-screen bg-[#f0efe9]">
