@@ -63,7 +63,7 @@ export const themes: Record<string, TemplateTheme> = {
 
   meridian: {
     id: 'meridian',
-    name: 'Meridian',
+    name: '书墨',
     background: '#f5f4ed',
     cnFont: '"Noto Serif SC","Source Han Serif SC","Songti SC",Georgia,serif',
     enFont: '"EB Garamond",Charter,Georgia,serif',
