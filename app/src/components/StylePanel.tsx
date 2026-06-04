@@ -74,7 +74,7 @@ export function StylePanel() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 overflow-x-hidden">
 
       {/* Display toggles */}
       <div className="bg-white rounded-xl p-3 flex flex-col gap-2 flex-shrink-0">
