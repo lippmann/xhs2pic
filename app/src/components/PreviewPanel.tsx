@@ -93,21 +93,22 @@ export function PreviewPanel({ pages }: Props) {
   return (
     <div className="flex h-full gap-3">
 
-        {/* Main preview */}
-        <div className="flex-1 flex flex-col items-center justify-start min-w-0">
-          <div style={{ position: 'relative', flexShrink: 0 }}>
+        {/* Main preview — fills available height dynamically */}
+        <div className="flex-1 flex flex-col min-w-0 min-h-0">
+          <div ref={imageWrapperRef} className="flex-1 min-h-0 flex items-start justify-center w-full">
             <div style={{
-              width: CANVAS_W * PREVIEW_SCALE,
-              height: CANVAS_H * PREVIEW_SCALE,
+              width: CANVAS_W * dynScale,
+              height: CANVAS_H * dynScale,
               overflow: 'hidden',
               borderRadius: 8,
               boxShadow: '0 4px 24px rgba(0,0,0,.12)',
               pointerEvents: 'none',
               userSelect: 'none',
+              flexShrink: 0,
             }}>
               <div style={{
                 transformOrigin: 'top left',
-                transform: `scale(${PREVIEW_SCALE})`,
+                transform: `scale(${dynScale})`,
                 width: CANVAS_W,
                 height: CANVAS_H,
               }}>
