@@ -18,18 +18,24 @@ export function parseMarkdown(md: string): Block[] {
     // h3-h6 → subtitle (check before h2/h1)
     if (/^#{3,6}/.test(first)) {
       blocks.push({ type: 'subtitle', text: first.replace(/^#{3,6}\s*/, '').trim() })
+      const rest = lines.slice(1).join('').trim()
+      if (rest) blocks.push({ type: 'paragraph', text: rest })
       continue
     }
 
     // h2
     if (/^##/.test(first)) {
       blocks.push({ type: 'subtitle', text: first.replace(/^##\s*/, '').trim() })
+      const rest = lines.slice(1).join('').trim()
+      if (rest) blocks.push({ type: 'paragraph', text: rest })
       continue
     }
 
     // h1
     if (/^#/.test(first)) {
       blocks.push({ type: 'title', text: first.replace(/^#\s*/, '').trim() })
+      const rest = lines.slice(1).join('').trim()
+      if (rest) blocks.push({ type: 'paragraph', text: rest })
       continue
     }
 
