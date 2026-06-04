@@ -77,9 +77,8 @@ export function PreviewPanel({ pages }: Props) {
   return (
     <div className="flex h-full gap-3">
 
-      {/* Main preview — top-aligned, no toolbar above */}
-      {selectedPage && (
-        <div className="flex-1 flex flex-col items-center justify-start min-w-0 gap-2">
+        {/* Main preview */}
+        <div className="flex-1 flex flex-col items-center justify-start min-w-0">
           <div style={{ position: 'relative', flexShrink: 0 }}>
             <div style={{
               width: CANVAS_W * PREVIEW_SCALE,
@@ -100,24 +99,7 @@ export function PreviewPanel({ pages }: Props) {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 flex-shrink-0">
-            <button
-              onClick={() => handleExportPage(selectedPage.index)}
-              disabled={exporting}
-              className="text-xs px-4 py-1.5 bg-white hover:bg-gray-50 rounded-lg shadow-sm border border-gray-100 text-gray-600 transition disabled:opacity-50"
-            >
-              下载此页
-            </button>
-            <button
-              onClick={handleExportAll}
-              disabled={exporting}
-              className="text-xs px-4 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition disabled:opacity-50"
-            >
-              {exporting ? '导出中…' : '下载全部 ZIP'}
-            </button>
-          </div>
         </div>
-      )}
 
       {/* Vertical thumbnail strip + page count */}
       {pages.length > 1 && (
