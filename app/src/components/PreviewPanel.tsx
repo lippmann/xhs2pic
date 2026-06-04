@@ -16,6 +16,22 @@ export function PreviewPanel({ pages }: Props) {
   const [exporting, setExporting] = useState(false)
   const pageRefs = useRef<Map<number, HTMLDivElement>>(new Map())
 
+  const imageWrapperRef = useRef<HTMLDivElement>(null)
+  const [dynScale, setDynScale] = useState(PREVIEW_SCALE)
+
+  useEffect(() => {
+    const el = imageWrapperRef.current
+    if (!el) return
+    const obs = new ResizeObserver(() => {
+      const { clientWidth: w, clientHeight: h } = el
+      if (w > 0 && h > 0) {
+        setDynScale(Math.min(h / CANVAS_H, w / CANVAS_W))
+      }
+    })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
   const selectedPage = pages[selectedIdx] ?? pages[0]
 
   async function screenshotEl(el: HTMLDivElement): Promise<string> {
