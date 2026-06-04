@@ -143,12 +143,15 @@ export function PreviewPanel({ pages }: Props) {
                 <button
                   key={i}
                   onClick={() => setSelectedIdx(i)}
-                  className={`flex-shrink-0 rounded overflow-hidden transition border-2 ${
+                  className={`flex-shrink-0 rounded transition border-2 ${
                     i === selectedIdx ? 'border-gray-800' : 'border-transparent opacity-50 hover:opacity-80'
                   }`}
-                  style={{ width: THUMB_W, height: THUMB_H }}
+                  style={{ width: THUMB_W, height: THUMB_H, position: 'relative', overflow: 'hidden', display: 'block' }}
                 >
                   <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
                     transformOrigin: 'top left',
                     transform: `scale(${THUMB_SCALE})`,
                     width: CANVAS_W,
