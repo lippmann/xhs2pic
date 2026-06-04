@@ -147,7 +147,7 @@ export function StylePanel() {
               value={author.name}
               onChange={e => setAuthor({ name: e.target.value })}
               placeholder="作者名称"
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-1.5 outline-none focus:border-gray-400"
+              className="flex-1 min-w-0 text-sm border border-gray-200 rounded-lg px-2 py-1.5 outline-none focus:border-gray-400"
             />
             <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
           </div>
