@@ -8,100 +8,78 @@ export type Block =
   | { type: 'divider' }
 
 export function parseMarkdown(md: string): Block[] {
-  const blocks: Block[] = []
-  const chunks = md.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean)
+  // Split on every newline — each line is its own potential block.
+  // Empty lines are skipped; they act as visual separators but don't affect structure.
+  const lines = md.split('\n').map(s => s.trim())
+  const raw: Block[] = []
 
-  for (const chunk of chunks) {
-    const lines = chunk.split('\n')
-    const first = lines[0]
+  for (const line of lines) {
+    if (!line) continue
 
-    // h3-h6 → subtitle (check before h2/h1)
-    if (/^#{3,6}/.test(first)) {
-      blocks.push({ type: 'subtitle', text: first.replace(/^#{3,6}\s*/, '').trim() })
-      const rest = lines.slice(1).join('').trim()
-      if (rest) blocks.push({ type: 'paragraph', text: rest })
+    // h3-h6 → subtitle
+    if (/^#{3,6}/.test(line)) {
+      raw.push({ type: 'subtitle', text: line.replace(/^#{3,6}\s*/, '').trim() })
       continue
     }
-
-    // h2
-    if (/^##/.test(first)) {
-      blocks.push({ type: 'subtitle', text: first.replace(/^##\s*/, '').trim() })
-      const rest = lines.slice(1).join('').trim()
-      if (rest) blocks.push({ type: 'paragraph', text: rest })
+    // h2 → subtitle
+    if (/^##/.test(line)) {
+      raw.push({ type: 'subtitle', text: line.replace(/^##\s*/, '').trim() })
       continue
     }
-
-    // h1
-    if (/^#/.test(first)) {
-      blocks.push({ type: 'title', text: first.replace(/^#\s*/, '').trim() })
-      const rest = lines.slice(1).join('').trim()
-      if (rest) blocks.push({ type: 'paragraph', text: rest })
+    // h1 → title
+    if (/^#/.test(line)) {
+      raw.push({ type: 'title', text: line.replace(/^#\s*/, '').trim() })
       continue
     }
-
-    // blockquote — `>` with or without space
-    if (/^>/.test(first)) {
-      const text = lines.map(l => l.replace(/^>\s*/, '')).join('\n')
-      blocks.push({ type: 'quote', text: text.trim() })
+    // blockquote
+    if (/^>/.test(line)) {
+      const text = line.replace(/^>\s*/, '').trim()
+      const prev = raw[raw.length - 1]
+      if (prev?.type === 'quote') {
+        prev.text += '\n' + text
+      } else {
+        raw.push({ type: 'quote', text })
+      }
       continue
     }
-
     // hr
-    if (/^(-{3,}|\*{3,}|_{3,})$/.test(first.trim())) {
-      blocks.push({ type: 'divider' })
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(line)) {
+      raw.push({ type: 'divider' })
       continue
     }
-
-    // ordered list — `1.` or `1. ` or `1、`
-    if (/^\d+[.、。]\s*/.test(first)) {
-      const items: string[] = []
-      let current: string[] = []
-      for (const line of lines) {
-        if (/^\d+[.、。]\s*/.test(line)) {
-          if (current.length > 0) items.push(current.join('').trim())
-          current = [line.replace(/^\d+[.、。]\s*/, '').trim()]
-        } else {
-          current.push(line)
-        }
+    // ordered list — `1.` `1、` `1。`
+    if (/^\d+[.、。]\s*/.test(line)) {
+      const text = line.replace(/^\d+[.、。]\s*/, '').trim()
+      const prev = raw[raw.length - 1]
+      if (prev?.type === 'list' && prev.ordered) {
+        prev.items.push(text)
+      } else {
+        raw.push({ type: 'list', items: [text], ordered: true })
       }
-      if (current.length > 0) items.push(current.join('').trim())
-      blocks.push({ type: 'list', items, ordered: true })
       continue
     }
-
-    // unordered list — `-` `*` `+` with or without space, also `·` `•`
-    // exclude `**` (bold) at start
-    if (/^[-+·•]\s*/.test(first) || (/^\*(?!\*)/.test(first) && /^\*\s+\S/.test(first))) {
-      const isListLine = (l: string) =>
-        /^[-+·•]\s*/.test(l) || (/^\*(?!\*)/.test(l) && /^\*\s+\S/.test(l))
-      const items: string[] = []
-      let current: string[] = []
-      for (const line of lines) {
-        if (isListLine(line)) {
-          if (current.length > 0) items.push(current.join('').trim())
-          current = [line.replace(/^[-*+·•]\s*/, '').trim()]
-        } else {
-          current.push(line)
-        }
+    // unordered list — `-` `+` `·` `•` or `* ` (exclude `**` bold)
+    if (/^[-+·•]\s*/.test(line) || (/^\*(?!\*)/.test(line) && /^\*\s+\S/.test(line))) {
+      const text = line.replace(/^[-*+·•]\s*/, '').trim()
+      const prev = raw[raw.length - 1]
+      if (prev?.type === 'list' && !prev.ordered) {
+        prev.items.push(text)
+      } else {
+        raw.push({ type: 'list', items: [text], ordered: false })
       }
-      if (current.length > 0) items.push(current.join('').trim())
-      blocks.push({ type: 'list', items, ordered: false })
       continue
     }
-
     // image
-    const imgMatch = first.match(/^!\[([^\]]*)\]\(([^)]+)\)/)
+    const imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)/)
     if (imgMatch) {
-      blocks.push({ type: 'image', src: imgMatch[2], caption: imgMatch[1] || undefined })
+      raw.push({ type: 'image', src: imgMatch[2], caption: imgMatch[1] || undefined })
       continue
     }
-
-    // paragraph
-    const text = lines.join('')
-    if (text) blocks.push({ type: 'paragraph', text })
+    // paragraph — each non-empty line is its own paragraph
+    raw.push({ type: 'paragraph', text: line })
   }
 
-  return blocks
+  return raw
 }
 
 export function parsePlainText(text: string): Block[] {
