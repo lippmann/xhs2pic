@@ -36,20 +36,17 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden gap-4 p-4">
 
         {/* 内容 */}
-        <div className="w-[320px] flex-shrink-0 flex flex-col gap-3 min-h-0">
-          <div className="text-xs text-gray-400 px-1 flex-shrink-0">内容</div>
+        <div className="w-[320px] flex-shrink-0 flex flex-col min-h-0">
           <EditorPanel />
         </div>
 
         {/* 样式 */}
         <div className="w-[300px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
-          <div className="text-xs text-gray-400 px-1">样式</div>
           <StylePanel />
         </div>
 
         {/* 预览 */}
-        <div className="flex-1 overflow-hidden flex flex-col gap-3">
-          <div className="text-xs text-gray-400 px-1">预览</div>
+        <div className="flex-1 overflow-hidden flex flex-col">
           <div className="flex-1 overflow-hidden">
             <PreviewPanel pages={pages} />
           </div>
