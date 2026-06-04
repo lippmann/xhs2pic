@@ -101,9 +101,25 @@ export function PreviewPanel({ pages }: Props) {
           </div>
         </div>
 
-      {/* Vertical thumbnail strip + page count */}
+      {/* Vertical thumbnail strip + buttons + page count */}
       {pages.length > 1 && (
         <div className="flex flex-col gap-2 flex-shrink-0" style={{ width: THUMB_W + 8 }}>
+          {/* Download buttons above thumbnails */}
+          <button
+            onClick={() => handleExportPage(selectedPage.index)}
+            disabled={exporting}
+            className="w-full text-xs px-3 py-1.5 bg-white hover:bg-gray-50 rounded-lg shadow-sm border border-gray-100 text-gray-600 transition disabled:opacity-50"
+          >
+            下载此页
+          </button>
+          <button
+            onClick={handleExportAll}
+            disabled={exporting}
+            className="w-full text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition disabled:opacity-50"
+          >
+            {exporting ? '导出中…' : '下载全部'}
+          </button>
+          {/* Thumbnails */}
           <div className="flex flex-col gap-2 overflow-y-auto flex-1 pr-1">
             {pages.map((page, i) => (
               <button
