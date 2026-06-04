@@ -92,7 +92,7 @@ function renderBlock(block: Block, theme: TemplateTheme, key: number) {
           {block.items.map((item, idx) => (
             <div key={idx} style={{ display: 'flex', gap: 12, marginBottom: 12 }}>
               <span style={{ color: muted, flexShrink: 0 }}>
-                {block.ordered ? `${idx + 1}.` : '·'}
+                {block.ordered ? `${(block.startIndex ?? 1) + idx}.` : '·'}
               </span>
               <span><Inline text={item} /></span>
             </div>
