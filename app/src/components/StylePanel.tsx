@@ -122,7 +122,7 @@ export function StylePanel() {
           <Toggle on={showAuthor} onToggle={() => setShowAuthor(!showAuthor)} />
         </div>
         {showAuthor && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => avatarInputRef.current?.click()}
