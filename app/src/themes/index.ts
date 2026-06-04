@@ -121,7 +121,7 @@ export const themes: Record<string, TemplateTheme> = {
 
   sulcus: {
     id: 'sulcus',
-    name: 'Sulcus',
+    name: '沉沙',
     background: '#f7f6f1',
     cnFont: '"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif',
     enFont: '"EB Garamond",Charter,Georgia,serif',
