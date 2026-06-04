@@ -45,7 +45,7 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden gap-4 p-4">
 
         {/* 内容 */}
-        <div className="w-[320px] flex-shrink-0 flex flex-col min-h-0">
+        <div className="w-[420px] flex-shrink-0 flex flex-col min-h-0">
           <EditorPanel />
         </div>
 
