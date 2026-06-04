@@ -49,12 +49,15 @@ export function parseMarkdown(md: string): Block[] {
     }
     // ordered list — `1.` `1、` `1。`
     if (/^\d+[.、。]\s*/.test(line)) {
+      const numMatch = line.match(/^(\d+)/)
+      const num = numMatch ? parseInt(numMatch[1]) : 1
       const text = line.replace(/^\d+[.、。]\s*/, '').trim()
       const prev = raw[raw.length - 1]
-      if (prev?.type === 'list' && prev.ordered) {
+      // Merge only if previous block is an ordered list AND this continues the sequence
+      if (prev?.type === 'list' && prev.ordered && num === (prev.startIndex ?? 1) + prev.items.length) {
         prev.items.push(text)
       } else {
-        raw.push({ type: 'list', items: [text], ordered: true })
+        raw.push({ type: 'list', items: [text], ordered: true, startIndex: num })
       }
       continue
     }
