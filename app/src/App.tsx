@@ -55,10 +55,8 @@ export default function App() {
         </div>
 
         {/* 预览 */}
-        <div className="flex-1 overflow-hidden flex flex-col">
-          <div className="flex-1 overflow-hidden">
-            <PreviewPanel pages={pages} />
-          </div>
+        <div className="flex-1 overflow-hidden">
+          <PreviewPanel pages={pages} />
         </div>
 
       </div>
