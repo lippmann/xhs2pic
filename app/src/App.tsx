@@ -36,13 +36,13 @@ export default function App() {
       <div className="flex flex-1 overflow-hidden gap-4 p-4">
 
         {/* 内容 */}
-        <div className="w-[360px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
-          <div className="text-xs text-gray-400 px-1">内容</div>
+        <div className="w-[320px] flex-shrink-0 flex flex-col gap-3 min-h-0">
+          <div className="text-xs text-gray-400 px-1 flex-shrink-0">内容</div>
           <EditorPanel />
         </div>
 
         {/* 样式 */}
-        <div className="w-[240px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
+        <div className="w-[300px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
           <div className="text-xs text-gray-400 px-1">样式</div>
           <StylePanel />
         </div>

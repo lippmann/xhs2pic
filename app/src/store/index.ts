@@ -27,7 +27,8 @@ type Store = {
   themeId: string
   styleOverrides: StyleOverrides
   setThemeId: (id: string) => void
-  setStyleOverride: (key: keyof StyleOverrides, value: number) => void
+  setStyleOverride: (key: keyof StyleOverrides, value: string | number) => void
+  deleteStyleOverrides: (keys: (keyof StyleOverrides)[]) => void
   resetStyleOverrides: () => void
   getTheme: () => TemplateTheme
 
@@ -57,6 +58,12 @@ export const useStore = create<Store>()(
       setThemeId: (themeId) => set({ themeId }),
       setStyleOverride: (key, value) =>
         set(s => ({ styleOverrides: { ...s.styleOverrides, [key]: value } })),
+      deleteStyleOverrides: (keys) =>
+        set(s => {
+          const next = { ...s.styleOverrides }
+          keys.forEach(k => delete next[k])
+          return { styleOverrides: next }
+        }),
       resetStyleOverrides: () => set({ styleOverrides: {} }),
       getTheme: () => {
         const base = themes[get().themeId] ?? themes[defaultThemeId]
