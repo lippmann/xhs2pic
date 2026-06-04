@@ -74,10 +74,10 @@ export function StylePanel() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
 
       {/* Display toggles */}
-      <div className="bg-white rounded-xl p-4 flex flex-col gap-3 flex-shrink-0">
+      <div className="bg-white rounded-xl p-3 flex flex-col gap-2 flex-shrink-0">
 
         {/* Cover toggle */}
         <div className="flex flex-col gap-0">
@@ -86,13 +86,13 @@ export function StylePanel() {
             <Toggle on={coverEnabled} onToggle={() => setCoverEnabled(!coverEnabled)} />
           </div>
           {coverEnabled && (
-            <div className="mt-3">
+            <div className="mt-2">
               {coverImage ? (
                 <div className="relative">
                   <img
                     src={coverImage}
                     className="w-full rounded-lg object-cover"
-                    style={{ maxHeight: 100 }}
+                    style={{ maxHeight: 90 }}
                     alt="封面"
                   />
                   <button
@@ -104,7 +104,7 @@ export function StylePanel() {
               ) : (
                 <button
                   onClick={() => coverInputRef.current?.click()}
-                  className="w-full border-2 border-dashed border-gray-200 hover:border-gray-300 rounded-lg py-3 text-xs text-gray-400 hover:text-gray-500 transition"
+                  className="w-full border-2 border-dashed border-gray-200 hover:border-gray-300 rounded-lg py-2.5 text-xs text-gray-400 hover:text-gray-500 transition"
                 >
                   点击上传封面图
                 </button>
@@ -122,16 +122,16 @@ export function StylePanel() {
           <Toggle on={showAuthor} onToggle={() => setShowAuthor(!showAuthor)} />
         </div>
         {showAuthor && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => avatarInputRef.current?.click()}
-                className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 hover:opacity-80 transition block"
+                className="w-9 h-9 rounded-full overflow-hidden bg-gray-100 hover:opacity-80 transition block"
                 title="上传头像"
               >
                 {author.avatar
                   ? <img src={author.avatar} className="w-full h-full object-cover" alt="" />
-                  : <span className="text-lg flex items-center justify-center h-full text-gray-400">+</span>
+                  : <span className="text-base flex items-center justify-center h-full text-gray-400">+</span>
                 }
               </button>
               {author.avatar && (
@@ -155,14 +155,14 @@ export function StylePanel() {
       </div>
 
       {/* Theme picker */}
-      <div className="bg-white rounded-xl p-4">
-        <div className="text-xs text-gray-400 mb-3">主题</div>
-        <div className="grid grid-cols-2 gap-2">
+      <div className="bg-white rounded-xl p-3">
+        <div className="text-xs text-gray-400 mb-2">主题</div>
+        <div className="grid grid-cols-2 gap-1.5">
           {themeList.map(t => (
             <button
               key={t.id}
               onClick={() => setThemeId(t.id)}
-              className={`py-2 px-3 rounded-lg text-sm text-left transition border ${
+              className={`py-1.5 px-3 rounded-lg text-sm text-left transition border ${
                 themeId === t.id
                   ? 'border-gray-800 bg-gray-50 text-gray-800 font-medium'
                   : 'border-gray-100 hover:border-gray-300 text-gray-600'
@@ -175,19 +175,19 @@ export function StylePanel() {
       </div>
 
       {/* Font picker */}
-      <div className="bg-white rounded-xl p-4 flex flex-col gap-3">
+      <div className="bg-white rounded-xl p-3 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-400">字体</span>
           {hasFontOverride && (
             <ResetButton onClick={() => deleteStyleOverrides(['cnFont'])} />
           )}
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-1.5">
           {FONT_OPTIONS.map(f => (
             <button
               key={f.value}
               onClick={() => setStyleOverride('cnFont', f.value)}
-              className={`py-2 px-3 rounded-lg text-sm text-left transition border ${
+              className={`py-1.5 px-3 rounded-lg text-sm text-left transition border ${
                 activeFontValue === f.value
                   ? 'border-gray-800 bg-gray-50 text-gray-800 font-medium'
                   : 'border-gray-100 hover:border-gray-300 text-gray-600'
@@ -201,7 +201,7 @@ export function StylePanel() {
       </div>
 
       {/* Typography controls */}
-      <div className="bg-white rounded-xl p-4 flex flex-col gap-4">
+      <div className="bg-white rounded-xl p-3 flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-400">排版</span>
           {hasTypoOverride && (
