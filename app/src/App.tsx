@@ -29,7 +29,7 @@ export default function App() {
     <div className="flex flex-col h-screen bg-[#f0efe9]">
 
       <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-100 flex-shrink-0">
-        <span className="font-medium text-gray-800 tracking-tight">xhs2pic</span>
+        <span className="font-medium text-gray-800 tracking-tight">长文转图片｜小红书、小绿书</span>
         <span className="text-xs text-gray-400">长文转小红书图文</span>
       </header>
 
