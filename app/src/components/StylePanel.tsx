@@ -187,7 +187,7 @@ export function StylePanel() {
             <button
               key={f.value}
               onClick={() => setStyleOverride('cnFont', f.value)}
-              className={`py-1.5 px-3 rounded-lg text-sm text-left transition border ${
+              className={`py-1 px-2 rounded-lg text-sm text-left transition border ${
                 activeFontValue === f.value
                   ? 'border-gray-800 bg-gray-50 text-gray-800 font-medium'
                   : 'border-gray-100 hover:border-gray-300 text-gray-600'
