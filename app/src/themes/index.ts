@@ -34,7 +34,7 @@ export type TemplateTheme = {
 export const themes: Record<string, TemplateTheme> = {
   wenkai: {
     id: 'wenkai',
-    name: '文楷',
+    name: '纸金',
     background: '#f9f6ef',
     cnFont: '"LXGW WenKai","Noto Serif SC","Songti SC",serif',
     enFont: '"EB Garamond","Lora",Georgia,serif',
