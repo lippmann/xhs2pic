@@ -91,7 +91,7 @@ export function PreviewPanel({ pages }: Props) {
   const THUMB_H = Math.round(CANVAS_H * THUMB_SCALE)
 
   return (
-    <div className="flex h-full gap-3">
+    <div className="flex flex-1 min-h-0 gap-3">
 
         {/* Main preview — fills available height dynamically */}
         <div className="flex-1 flex flex-col min-w-0 min-h-0">
