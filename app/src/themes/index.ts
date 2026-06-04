@@ -92,7 +92,7 @@ export const themes: Record<string, TemplateTheme> = {
 
   nuit: {
     id: 'nuit',
-    name: 'Nuit',
+    name: '夜半',
     background: '#141413',
     cnFont: '"Noto Serif SC","Source Han Serif SC","Songti SC",Georgia,serif',
     enFont: '"EB Garamond",Charter,Georgia,serif',
