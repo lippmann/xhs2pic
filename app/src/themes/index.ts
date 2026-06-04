@@ -156,9 +156,9 @@ export const themes: Record<string, TemplateTheme> = {
     enFont: '"EB Garamond",Charter,Georgia,serif',
     padX: 88,
     padY: 80,
-    body: { size: 30, lineHeight: 2.0, weight: 400, color: '#0d2d3a' },
-    h2:   { size: 42, lineHeight: 1.22, weight: 700, color: '#0d2d3a' },
-    h3:   { size: 32, lineHeight: 1.40, weight: 700, color: '#1a4a56' },
+    body: { size: 30, lineHeight: 2.0, weight: 400, color: '#1a3a46' },
+    h2:   { size: 42, lineHeight: 1.22, weight: 700, color: '#061820' },
+    h3:   { size: 32, lineHeight: 1.40, weight: 700, color: '#0d2d3a' },
     muted: '#3a7a82',
     verse: {
       borderLeft: '4px solid #5bc8c0',
