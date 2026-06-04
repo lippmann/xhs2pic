@@ -50,12 +50,12 @@ export default function App() {
         </div>
 
         {/* 样式 */}
-        <div className="w-[220px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto">
+        <div className="w-[220px] flex-shrink-0 flex flex-col gap-3 overflow-y-auto overflow-x-hidden min-h-0">
           <StylePanel />
         </div>
 
         {/* 预览 */}
-        <div className="flex-1 min-h-0 overflow-hidden">
+        <div className="flex-1 min-h-0 h-full overflow-hidden">
           <PreviewPanel pages={pages} />
         </div>
 
