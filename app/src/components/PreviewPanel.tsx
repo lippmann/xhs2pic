@@ -30,7 +30,7 @@ export function PreviewPanel({ pages }: Props) {
     })
     obs.observe(el)
     return () => obs.disconnect()
-  }, [])
+  }, [pages.length > 0])  // re-run when imageWrapperRef first mounts (pages 0→N)
 
   const selectedPage = pages[selectedIdx] ?? pages[0]
 
