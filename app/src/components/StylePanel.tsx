@@ -167,7 +167,6 @@ export function StylePanel() {
                   ? 'border-gray-800 bg-gray-50 text-gray-800 font-medium'
                   : 'border-gray-100 hover:border-gray-300 text-gray-600'
               }`}
-              style={{ fontFamily: t.cnFont }}
             >
               {t.name}
             </button>
