@@ -72,9 +72,19 @@ export function parseMarkdown(md: string): Block[] {
     // unordered list — `-` `*` `+` with or without space, also `·` `•`
     // exclude `**` (bold) at start
     if (/^[-+·•]\s*/.test(first) || (/^\*(?!\*)/.test(first) && /^\*\s+\S/.test(first))) {
-      const items = lines
-        .filter(l => /^[-+·•]\s*/.test(l) || (/^\*(?!\*)/.test(l) && /^\*\s+\S/.test(l)))
-        .map(l => l.replace(/^[-*+·•]\s*/, '').trim())
+      const isListLine = (l: string) =>
+        /^[-+·•]\s*/.test(l) || (/^\*(?!\*)/.test(l) && /^\*\s+\S/.test(l))
+      const items: string[] = []
+      let current: string[] = []
+      for (const line of lines) {
+        if (isListLine(line)) {
+          if (current.length > 0) items.push(current.join('').trim())
+          current = [line.replace(/^[-*+·•]\s*/, '').trim()]
+        } else {
+          current.push(line)
+        }
+      }
+      if (current.length > 0) items.push(current.join('').trim())
       blocks.push({ type: 'list', items, ordered: false })
       continue
     }
