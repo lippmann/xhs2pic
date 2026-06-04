@@ -106,14 +106,16 @@ export function PreviewPanel({ pages }: Props) {
         <button
           onClick={() => handleExportPage(selectedPage.index)}
           disabled={exporting}
-          className="w-full text-xs px-3 py-1.5 bg-white hover:bg-gray-50 rounded-lg shadow-sm border border-gray-100 text-gray-600 transition disabled:opacity-50"
+          style={{ width: THUMB_W }}
+          className="text-xs px-3 py-1.5 bg-white hover:bg-gray-50 rounded-lg shadow-sm border border-gray-100 text-gray-600 transition disabled:opacity-50"
         >
           下载此页
         </button>
         <button
           onClick={handleExportAll}
           disabled={exporting}
-          className="w-full text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition disabled:opacity-50"
+          style={{ width: THUMB_W }}
+          className="text-xs px-3 py-1.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-white transition disabled:opacity-50"
         >
           {exporting ? '导出中…' : '下载全部'}
         </button>
