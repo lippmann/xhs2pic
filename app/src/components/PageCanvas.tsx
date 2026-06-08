@@ -16,22 +16,33 @@ type Props = {
 }
 
 // Convert inline markdown to HTML: **bold**, *italic*, ~~del~~, `code`
-function inlineHtml(text: string): string {
+// boldColor: theme accent color for bold text (from verse.borderLeft)
+function inlineHtml(text: string, boldColor?: string): string {
+  const boldTag = boldColor
+    ? `<strong style="color:${boldColor}">$1</strong>`
+    : '<strong>$1</strong>'
   return text
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*\*(.+?)\*\*/g, boldTag)
     .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
     .replace(/\*+/g, '')  // strip leftover unmatched asterisks
     .replace(/~~(.+?)~~/g, '<del>$1</del>')
     .replace(/`(.+?)`/g, '<code style="font-size:.88em;background:rgba(0,0,0,.06);padding:2px 6px;border-radius:4px">$1</code>')
 }
 
-function Inline({ text }: { text: string }) {
-  return <span dangerouslySetInnerHTML={{ __html: inlineHtml(text) }} />
+// Extract accent color from verse.borderLeft, e.g. '4px solid #5bc8c0' → '#5bc8c0'
+function verseColor(borderLeft: string): string {
+  const m = borderLeft.match(/#[0-9a-fA-F]{3,8}/)
+  return m ? m[0] : ''
+}
+
+function Inline({ text, boldColor }: { text: string; boldColor?: string }) {
+  return <span dangerouslySetInnerHTML={{ __html: inlineHtml(text, boldColor) }} />
 }
 
 function renderBlock(block: Block, theme: TemplateTheme, key: number) {
   const { body, h2, verse: v, muted } = theme
+  const boldColor = verseColor(v.borderLeft)
 
   switch (block.type) {
     case 'title':
@@ -43,7 +54,7 @@ function renderBlock(block: Block, theme: TemplateTheme, key: number) {
           color: h2.color,
           marginBottom: 24,
           letterSpacing: '-.01em',
-        }}><Inline text={block.text} /></div>
+        }}><Inline text={block.text} boldColor={boldColor} /></div>
       )
     case 'subtitle':
       return (
@@ -54,7 +65,7 @@ function renderBlock(block: Block, theme: TemplateTheme, key: number) {
           color: h2.color,
           margin: '56px 0 20px',
           padding: 0,
-        }}><Inline text={block.text} /></h2>
+        }}><Inline text={block.text} boldColor={boldColor} /></h2>
       )
     case 'paragraph':
       return (
@@ -65,9 +76,10 @@ function renderBlock(block: Block, theme: TemplateTheme, key: number) {
           color: body.color,
           marginBottom: 24,
           letterSpacing: '.02em',
-        }}><Inline text={block.text} /></p>
+        }}><Inline text={block.text} boldColor={boldColor} /></p>
       )
-    case 'quote':
+    case 'quote': {
+      const quoteLines = block.text.split('\n')
       return (
         <div key={key} style={{
           borderLeft: v.borderLeft,
@@ -78,8 +90,15 @@ function renderBlock(block: Block, theme: TemplateTheme, key: number) {
           fontWeight: v.fontWeight,
           lineHeight: body.lineHeight,
           color: h2.color,
-        }}><Inline text={block.text} /></div>
+        }}>
+          {quoteLines.map((line, i) => (
+            <p key={i} style={{ margin: i === 0 ? 0 : `${Math.round(body.size * body.lineHeight * 0.6)}px 0 0` }}>
+              <Inline text={line} boldColor={boldColor} />
+            </p>
+          ))}
+        </div>
       )
+    }
     case 'list':
       return (
         <div key={key} style={{
@@ -94,7 +113,7 @@ function renderBlock(block: Block, theme: TemplateTheme, key: number) {
               <span style={{ color: muted, flexShrink: 0 }}>
                 {block.ordered ? `${(block.startIndex ?? 1) + idx}.` : '·'}
               </span>
-              <span><Inline text={item} /></span>
+              <span><Inline text={item} boldColor={boldColor} /></span>
             </div>
           ))}
         </div>

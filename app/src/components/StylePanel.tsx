@@ -7,6 +7,8 @@ const FONT_OPTIONS = [
   { label: '思源宋体', value: '"Noto Serif SC","Source Han Serif SC","Songti SC",Georgia,serif' },
   { label: '思源黑体', value: '"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif' },
   { label: '朱雀仿宋', value: '"Zhuque Fangsong","FangSong","STFangsong",serif' },
+  { label: '新晰黑', value: '"LXGW Neo XiHei","Noto Sans SC","PingFang SC",sans-serif' },
+  { label: '新致宋', value: '"LXGW Neo ZhiSong","Noto Serif SC","Songti SC",serif' },
 ]
 
 function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {

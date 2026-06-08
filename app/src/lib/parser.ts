@@ -31,7 +31,7 @@ export function parseMarkdown(md: string): Block[] {
       raw.push({ type: 'title', text: line.replace(/^#\s*/, '').trim() })
       continue
     }
-    // blockquote
+    // blockquote — consecutive `>` lines merge into one block, separated by \n
     if (/^>/.test(line)) {
       const text = line.replace(/^>\s*/, '').trim()
       const prev = raw[raw.length - 1]
